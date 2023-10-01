@@ -1,4 +1,6 @@
-package com.orbitalyards.landwar.jpa.model;
+package com.orbitalyards.landwar.jpa.model.ref;
+
+import com.orbitalyards.landwar.jpa.model.BaseModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,18 +10,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="RULES_RT")
-public class RulesRefTable {
+@Table(name="RULES_REF")
+public class RulesRefTable extends BaseModel {
 
 	@Id
-	@Column(name="id", nullable=false, updatable=true)
+	@Column(name="ID", unique = true, nullable=false, updatable=true, insertable = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="name", nullable=false, length=64)
+	@Column(name="NAME", unique = false, nullable=false, updatable=true, insertable = true, length=64)
 	private String name;
 	
-	@Column(name="desc", nullable=false, length=128)
+	@Column(name="DESC", unique = false, nullable=true, updatable=true, insertable = true, length=128)
 	private String desc;
 	
 	public RulesRefTable() {}
@@ -47,6 +49,8 @@ public class RulesRefTable {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+	
+	
 	
 	
 }

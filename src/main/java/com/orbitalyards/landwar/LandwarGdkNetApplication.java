@@ -13,5 +13,4 @@ public class LandwarGdkNetApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LandwarGdkNetApplication.class, args);
 	}
-
 }

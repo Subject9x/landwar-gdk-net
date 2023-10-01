@@ -1,8 +1,10 @@
 package com.orbitalyards.landwar.jpa.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
+import com.orbitalyards.landwar.jpa.model.map.UnitTagMap;
 import com.orbitalyards.landwar.mvc.model.dto.UnitInfoEntryDTO;
 
 import jakarta.persistence.CascadeType;
@@ -12,9 +14,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /***
@@ -25,58 +26,56 @@ import jakarta.persistence.Table;
  * 
  * @author Roohr
  */
-@Entity
-@Table(name="UNIT_INFO", schema="")
+@Entity(name = "unitInfo")
+@Table(name="UNIT_INFO")
 public class UnitInfo extends BaseModel{
 	
 	@Id
-	@Column(name="id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name="uid", nullable=false, length=512)
+	@Column(nullable=false, updatable = false, insertable = true, length=512)
 	private String uid;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user", unique = true, nullable = false)
-	private User user;
-	
-	@Column(name="name", nullable=false, length=64)
+	@Column(nullable=false, updatable = true, insertable = true, length=64)
 	private String unitName;
 	
-	@Column(name="points", nullable=false)
+	@Column(nullable=false, updatable = true, insertable = true)
 	private float pointsCost;
 	
-	@Column(name="size", nullable=false)
+	@Column(nullable=false, updatable = true, insertable = true)
 	private int size;
 	
-	@Column(name="move", nullable=false)
+	@Column(nullable=false, updatable = true, insertable = true)
 	private int move;
 	
-	@Column(name="evade", nullable=false)
+	@Column( nullable=false, updatable = true, insertable = true)
 	private int evade;
 	
-	@Column(name="armor", nullable=false)
+	@Column(nullable=false, updatable = true, insertable = true)
 	private int armor;
 	
-	@Column(name="dmgMelee", nullable=false)
+	@Column(name="DMG_MEL", nullable=false, updatable = true, insertable = true)
 	private int dmgMelee;
 	
-	@Column(name="dmgRange", nullable=false)
+	@Column(name="DMG_RNG", nullable=false, updatable = true, insertable = true)
 	private int dmgRange;
 	
-	@Column(name="range", nullable=false)
+	@Column(nullable=false, updatable = true, insertable = true)
 	private int range;
 	
-	@OneToMany(mappedBy= "tagId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
-	private List<UnitTag> tags = new ArrayList<UnitTag>();
-	
-	@Column(name="desc", nullable=false, length=256)
+	@Column(nullable=true, updatable = true, insertable = true, length=256)
 	private String desc;
 	
-	@Column(name="imageUrl", nullable=false, length=256)
+	@Column(name="IMG_URL", nullable=true, updatable = true, insertable = true, length=256)
 	private String imgUrl;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<UnitTagMap> tags = new HashSet<UnitTagMap>();
 	
+	
+//	@ManyToMany()
+//	private List<ArmyList> armyLists = new ArrayList<ArmyList>();
 	
 	public UnitInfo() {}
 	
@@ -168,15 +167,11 @@ public class UnitInfo extends BaseModel{
 		this.range = range;
 	}
 
-	public List<UnitTag> getTags() {
-		List<UnitTag> out = new ArrayList<UnitTag>();
-		for(UnitTag t : this.tags) {
-			out.add(t);
-		}
+	public Set<UnitTagMap> getTags() {
 		return this.tags;
 	}
 
-	public void setTags(List<UnitTag> tags) {
+	public void setTags(Set<UnitTagMap> tags) {
 		this.tags = tags;
 	}
 
@@ -197,9 +192,43 @@ public class UnitInfo extends BaseModel{
 	}
 
 	@Override
-	public String toString() {
-		return "UnitInfoModel [unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size + ", move="
-				+ move + ", evade=" + evade + ", armor=" + armor + ", dmgMelee=" + dmgMelee + ", dmgRange=" + dmgRange
-				+ ", range=" + range + ", tags=" + tags + ", desc=" + desc + ", imgUrl=" + imgUrl + "]";
+	public int hashCode() {
+		return Objects.hash(armor, desc, dmgMelee, dmgRange, evade, id, imgUrl, move, pointsCost, range, size, tags,
+				uid, unitName);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnitInfo other = (UnitInfo) obj;
+		return armor == other.armor && Objects.equals(desc, other.desc) && dmgMelee == other.dmgMelee
+				&& dmgRange == other.dmgRange && evade == other.evade && Objects.equals(id, other.id)
+				&& Objects.equals(imgUrl, other.imgUrl) && move == other.move
+				&& Float.floatToIntBits(pointsCost) == Float.floatToIntBits(other.pointsCost) && range == other.range
+				&& size == other.size && Objects.equals(tags, other.tags) && Objects.equals(uid, other.uid)
+				&& Objects.equals(unitName, other.unitName);
+	}
+
+//	public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+
+//	public List<ArmyList> getArmyLists() {
+//		return armyLists;
+//	}
+//
+//	public void setArmyLists(List<ArmyList> armyLists) {
+//		this.armyLists = armyLists;
+//	}
+	
+	
 }

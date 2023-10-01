@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.orbitalyards.landwar.jpa.model.UserRole;
+import com.orbitalyards.landwar.jpa.model.map.UserRoleMap;
 
-public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
-	Optional<UserRole> findByName(String userName);
-}
+//public interface UserRoleRepository extends JpaRepository<UserRoleMap, Integer> {
+//	Optional<UserRoleMap> findByName(String userName);
+//}

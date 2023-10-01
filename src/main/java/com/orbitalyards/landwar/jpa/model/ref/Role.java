@@ -1,4 +1,6 @@
-package com.orbitalyards.landwar.jpa.model;
+package com.orbitalyards.landwar.jpa.model.ref;
+
+import com.orbitalyards.landwar.jpa.model.BaseModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,18 +10,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user_roles")
-public class UserRole {
+@Table(name = "USER_ROLE_REF")
+public class Role extends BaseModel{
 	
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "ID", unique = true, nullable = false, insertable = true, updatable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "role")
+	@Column(name = "ROLE", unique = true, nullable = false, insertable = true, updatable = true)
 	private String role;
 	
-	public UserRole() {}
+	public Role() {}
 
 	public Long getId() {
 		return id;

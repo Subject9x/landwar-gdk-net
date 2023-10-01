@@ -1,8 +1,10 @@
 package com.orbitalyards.landwar.jpa.model;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
+import com.orbitalyards.landwar.jpa.dao.impl.UnitArmyMap;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,38 +13,31 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "ARMY_LIST", schema="")
+@Entity(name = "armyList")
+@Table(name = "ARMY_LIST")
 public class ArmyList extends BaseModel {
 
 	@Id
-	@Column(name ="id", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="uid", nullable = false, insertable=true, updatable = false)
+	@Column(name="UID", nullable = false, insertable=true, updatable = false, unique = true)
 	private String uid;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user", unique = true, nullable = false)
-	private User user;
-	
-	@Column(name="name", nullable = false, length = 64)
+	@Column(name="NAME", nullable = false, length = 64, updatable = true, insertable = true)
 	private String listName;
 	
-	@Column(name="points", nullable = false)
+	@Column(name="POINTS", nullable = false, updatable = true, insertable = true)
 	private float totalPoints;
 	
-	@Column(name="desc", nullable = false, length = 128)
+	@Column(name="DESC", nullable = false, length = 128, updatable = true, insertable = true)
 	private String desc;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
-	private List<UnitInfoEntry> units;
+	private Set<UnitArmyMap> units = new HashSet<UnitArmyMap>();
 	
 	public ArmyList() {}
 
@@ -60,14 +55,6 @@ public class ArmyList extends BaseModel {
 
 	public void setUid(String uid) {
 		this.uid = uid;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getListName() {
@@ -94,11 +81,31 @@ public class ArmyList extends BaseModel {
 		this.desc = desc;
 	}
 
-	public List<UnitInfoEntry> getUnits() {
+	public Set<UnitArmyMap> getUnits() {
 		return units;
 	}
 
-	public void setUnits(List<UnitInfoEntry> units) {
+	public void setUnits(Set<UnitArmyMap> units) {
 		this.units = units;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(desc, id, listName, totalPoints, uid, units);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArmyList other = (ArmyList) obj;
+		return Objects.equals(desc, other.desc) && Objects.equals(id, other.id)
+				&& Objects.equals(listName, other.listName)
+				&& Float.floatToIntBits(totalPoints) == Float.floatToIntBits(other.totalPoints)
+				&& Objects.equals(uid, other.uid) && Objects.equals(units, other.units);
 	}
 }
