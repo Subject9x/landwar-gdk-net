@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class UnitTagMap{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(name = "tag_id", unique = false, nullable = false)

@@ -1,51 +1,37 @@
 package com.orbitalyards.landwar.jpa.model.ref;
 
+import java.util.Objects;
+
 import com.orbitalyards.landwar.jpa.model.BaseModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="UNIT_TAGS")
 public class UnitTag extends BaseModel {
 	
-	@Id
-	@Column(name="ID", unique = true, nullable=false, updatable = false, insertable = true)
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2411294600703603034L;
+
 	@Column(name="TAG_ID", nullable = false, insertable = true, updatable = true)
-	private int tag_id;
+	private int tagId;
 	
 	@Column(name="TAG_MODULE", nullable=false, insertable = true, updatable = true)
 	private int rulesId;
 	
 	public UnitTag() {}
-	
-	public UnitTag(Long id, int tag_id, int rulesId) {
-		this.id = id;
-		this.tag_id = tag_id;
-		this.rulesId = rulesId;
-	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public int getTagId() {
-		return tag_id;
+		return tagId;
 	}
 
-	public void setTagId(int tag_id) {
-		this.tag_id = tag_id;
+	public void setTagId(int tagId) {
+		this.tagId = tagId;
 	}
 
 	public int getRulesId() {
@@ -55,6 +41,21 @@ public class UnitTag extends BaseModel {
 	public void setRulesId(int rulesId) {
 		this.rulesId = rulesId;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), rulesId, tagId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnitTag other = (UnitTag) obj;
+		return Objects.equals(getId(), other.getId()) && rulesId == other.rulesId && tagId == other.tagId;
+	}
 }

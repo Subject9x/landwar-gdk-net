@@ -1,4 +1,4 @@
-package com.orbitalyards.landwar.jpa.dao.impl;
+package com.orbitalyards.landwar.jpa.model.map;
 
 import java.util.Objects;
 
@@ -10,14 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity(name = "unitArmyMap")
-@Table(name = "UNIT_ARMY_MAP")
+@Table(name="UNIT_ARMY_MAP")
 public class UnitArmyMap {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "unit_id", unique = false, nullable = false, insertable = true, updatable = true)
+	@Column(name = "unit_id", unique = false)
 	private Long unitId;
 	
 	public UnitArmyMap() {}
@@ -40,7 +40,7 @@ public class UnitArmyMap {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, unitId);
+		return Objects.hash(unitId, id);
 	}
 
 	@Override
@@ -52,7 +52,6 @@ public class UnitArmyMap {
 		if (getClass() != obj.getClass())
 			return false;
 		UnitArmyMap other = (UnitArmyMap) obj;
-		return Objects.equals(id, other.id) && Objects.equals(unitId, other.unitId);
+		return Objects.equals(unitId, other.unitId) && Objects.equals(id, other.id);
 	}
-	
 }

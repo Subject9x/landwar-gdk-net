@@ -4,16 +4,15 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.orbitalyards.landwar.jpa.model.map.UserRoleMap;
+import com.orbitalyards.landwar.jpa.model.ref.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 /***
@@ -25,36 +24,34 @@ import jakarta.persistence.Table;
 @Entity(name = "appUser")
 @Table(name = "USERS")
 public class User extends BaseModel{
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6577760273796675212L;
+
 	@Column(name="USERNAME", nullable=false, updatable = true, insertable = true, length = 32)
 	private String userName;
 	
 	@Column(name="USER_ID", nullable=false, updatable = false, insertable = true, length = 64)
 	private String userId;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<UnitInfo> units = new HashSet<UnitInfo>();
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<ArmyList> armyLists = new HashSet<ArmyList>();
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private Set<UserRoleMap> roles = new HashSet<UserRoleMap>();
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	private Set<Role> roles = new HashSet<Role>();
 	
 	public User() {}
-
-	public Long getId() {
-		return id;
+	
+	@PrePersist
+	public void userPrePersist() {
+		setUserId(String.valueOf(userHashCode()));
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -71,11 +68,11 @@ public class User extends BaseModel{
 		this.userId = userId;
 	}
 	
-	public Set<UserRoleMap> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<UserRoleMap> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -95,9 +92,18 @@ public class User extends BaseModel{
 		this.armyLists = armyLists;
 	}
 	
+	public int userHashCode() {
+		int hash = 7;
+		
+		hash = 31 * hash + (userName == null ? 0 : userName.hashCode());
+		hash = 31 * hash + (String.valueOf(System.currentTimeMillis()).hashCode());
+		
+		return hash;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, userId, userName, units, armyLists, roles);
+		return Objects.hash(getId(), userId, userName, units, armyLists, roles);
 	}
 
 	@Override
@@ -109,10 +115,14 @@ public class User extends BaseModel{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(id, other.id) && Objects.equals(userId, other.userId)
+		return Objects.equals(getId(), other.getId()) && Objects.equals(userId, other.userId)
 				&& Objects.equals(userName, other.userName) && Objects.equals(units, other.units)
 				&& Objects.equals(armyLists, other.armyLists) && Objects.equals(roles, other.roles);
 	}
 
-	
+	@Override
+	public String toString() {
+		return "User [id=" + getId() + ", userName=" + userName + ", userId=" + userId + ", units=" + units + ", armyLists="
+				+ armyLists + ", roles=" + roles + "]";
+	}
 }

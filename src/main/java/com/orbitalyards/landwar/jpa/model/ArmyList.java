@@ -4,26 +4,22 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.orbitalyards.landwar.jpa.dao.impl.UnitArmyMap;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity(name = "armyList")
 @Table(name = "ARMY_LIST")
 public class ArmyList extends BaseModel {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4779293053609328512L;
+
 	@Column(name="UID", nullable = false, insertable=true, updatable = false, unique = true)
 	private String uid;
 	
@@ -36,19 +32,11 @@ public class ArmyList extends BaseModel {
 	@Column(name="DESC", nullable = false, length = 128, updatable = true, insertable = true)
 	private String desc;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
-	private Set<UnitArmyMap> units = new HashSet<UnitArmyMap>();
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	private Set<UnitInfo> units = new HashSet<UnitInfo>();
 	
 	public ArmyList() {}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 	public String getUid() {
 		return uid;
 	}
@@ -81,17 +69,17 @@ public class ArmyList extends BaseModel {
 		this.desc = desc;
 	}
 
-	public Set<UnitArmyMap> getUnits() {
+	public Set<UnitInfo> getUnits() {
 		return units;
 	}
 
-	public void setUnits(Set<UnitArmyMap> units) {
+	public void setUnits(Set<UnitInfo> units) {
 		this.units = units;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(desc, id, listName, totalPoints, uid, units);
+		return Objects.hash(desc, getId(), listName, totalPoints, uid, units);
 	}
 
 	@Override
@@ -103,9 +91,15 @@ public class ArmyList extends BaseModel {
 		if (getClass() != obj.getClass())
 			return false;
 		ArmyList other = (ArmyList) obj;
-		return Objects.equals(desc, other.desc) && Objects.equals(id, other.id)
+		return Objects.equals(desc, other.desc) && Objects.equals(getId(), other.getId())
 				&& Objects.equals(listName, other.listName)
 				&& Float.floatToIntBits(totalPoints) == Float.floatToIntBits(other.totalPoints)
 				&& Objects.equals(uid, other.uid) && Objects.equals(units, other.units);
+	}
+
+	@Override
+	public String toString() {
+		return "ArmyList [id=" + getId() + ", uid=" + uid + ", listName=" + listName + ", totalPoints=" + totalPoints
+				+ ", desc=" + desc + ", units=" + units + "]";
 	}
 }

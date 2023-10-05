@@ -4,18 +4,15 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.orbitalyards.landwar.jpa.model.map.UnitTagMap;
+import com.orbitalyards.landwar.jpa.model.ref.UnitTag;
 import com.orbitalyards.landwar.mvc.model.dto.UnitInfoEntryDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /***
@@ -29,14 +26,16 @@ import jakarta.persistence.Table;
 @Entity(name = "unitInfo")
 @Table(name="UNIT_INFO")
 public class UnitInfo extends BaseModel{
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@Column(nullable=false, updatable = false, insertable = true, length=512)
-	private String uid;
+
+//	@Column(nullable=false, updatable = false, insertable = true, length=512)
+//	private String uid;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3406778538463459437L;
+
 	@Column(nullable=false, updatable = true, insertable = true, length=64)
 	private String unitName;
 	
@@ -70,30 +69,13 @@ public class UnitInfo extends BaseModel{
 	@Column(name="IMG_URL", nullable=true, updatable = true, insertable = true, length=256)
 	private String imgUrl;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private Set<UnitTagMap> tags = new HashSet<UnitTagMap>();
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User appUser;
 	
-	
-//	@ManyToMany()
-//	private List<ArmyList> armyLists = new ArrayList<ArmyList>();
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+	private Set<UnitTag> tags = new HashSet<UnitTag>();
 	
 	public UnitInfo() {}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUid() {
-		return uid;
-	}
-
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
 	
 	public String getUnitName() {
 		return unitName;
@@ -167,11 +149,11 @@ public class UnitInfo extends BaseModel{
 		this.range = range;
 	}
 
-	public Set<UnitTagMap> getTags() {
+	public Set<UnitTag> getTags() {
 		return this.tags;
 	}
 
-	public void setTags(Set<UnitTagMap> tags) {
+	public void setTags(Set<UnitTag> tags) {
 		this.tags = tags;
 	}
 
@@ -190,11 +172,20 @@ public class UnitInfo extends BaseModel{
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
+	
+	public User getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(User appUser) {
+		this.appUser = appUser;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(armor, desc, dmgMelee, dmgRange, evade, id, imgUrl, move, pointsCost, range, size, tags,
-				uid, unitName);
+		return Objects.hash(armor, desc, dmgMelee, dmgRange, evade, getId(), imgUrl, move, pointsCost, range, size, tags,
+				 unitName, appUser);
+		//uid,
 	}
 
 	@Override
@@ -207,28 +198,19 @@ public class UnitInfo extends BaseModel{
 			return false;
 		UnitInfo other = (UnitInfo) obj;
 		return armor == other.armor && Objects.equals(desc, other.desc) && dmgMelee == other.dmgMelee
-				&& dmgRange == other.dmgRange && evade == other.evade && Objects.equals(id, other.id)
+				&& dmgRange == other.dmgRange && evade == other.evade && Objects.equals(getId(), other.getId())
 				&& Objects.equals(imgUrl, other.imgUrl) && move == other.move
 				&& Float.floatToIntBits(pointsCost) == Float.floatToIntBits(other.pointsCost) && range == other.range
-				&& size == other.size && Objects.equals(tags, other.tags) && Objects.equals(uid, other.uid)
-				&& Objects.equals(unitName, other.unitName);
+				&& size == other.size && Objects.equals(tags, other.tags) && Objects.equals(unitName, other.unitName)
+				&& Objects.equals(appUser, other.appUser);
+		//&& Objects.equals(uid, other.uid)
 	}
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
-
-//	public List<ArmyList> getArmyLists() {
-//		return armyLists;
-//	}
-//
-//	public void setArmyLists(List<ArmyList> armyLists) {
-//		this.armyLists = armyLists;
-//	}
-	
-	
+	@Override
+	public String toString() {
+		return "UnitInfo [id=" + getId() + ", unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size
+				+ ", move=" + move + ", evade=" + evade + ", armor=" + armor + ", dmgMelee=" + dmgMelee + ", dmgRange="
+				+ dmgRange + ", range=" + range + ", desc=" + desc + ", imgUrl=" + imgUrl + ", appUser=" + appUser
+				+ ", tags=" + tags + "]";
+	}
 }
