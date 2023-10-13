@@ -1,5 +1,6 @@
 package com.orbitalyards.landwar.jpa.model;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +23,7 @@ import jakarta.persistence.Table;
  * @author roohr
  */
 @Entity(name = "appUser")
-@Table(name = "USERS")
+@Table(name = "APP_USERS")
 public class User extends BaseModel{
 	
 	/**
@@ -33,8 +34,14 @@ public class User extends BaseModel{
 	@Column(name="USERNAME", nullable=false, updatable = true, insertable = true, length = 32)
 	private String userName;
 	
-	@Column(name="USER_ID", nullable=false, updatable = false, insertable = true, length = 64)
-	private String userId;
+	@Column(name="PASSCODE", nullable=false, updatable = true, insertable = true, length = 64)
+	private String passCode;
+	
+	@Column(name="LOGGED_IN", nullable=false, updatable = true, insertable = true)
+	private boolean logIn = false;
+	
+	@Column(name = "LOG_IN_TIME", nullable=true, updatable = true, insertable = true)
+	private Timestamp logInTime;
 	
 	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<UnitInfo> units = new HashSet<UnitInfo>();
@@ -46,12 +53,7 @@ public class User extends BaseModel{
 	private Set<Role> roles = new HashSet<Role>();
 	
 	public User() {}
-	
-	@PrePersist
-	public void userPrePersist() {
-		setUserId(String.valueOf(userHashCode()));
-	}
-	
+		
 	public String getUserName() {
 		return userName;
 	}
@@ -60,14 +62,30 @@ public class User extends BaseModel{
 		this.userName = userName;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getPassCode() {
+		return passCode;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setPasscode(String passCode) {
+		this.passCode = passCode;
 	}
 	
+	public boolean getLogIn() {
+		return logIn;
+	}
+
+	public void setLogIn(boolean logIn) {
+		this.logIn = logIn;
+	}
+
+	public Timestamp getLogInTime() {
+		return logInTime;
+	}
+
+	public void setLogInTime(Timestamp logInTime) {
+		this.logInTime = logInTime;
+	}
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -103,7 +121,7 @@ public class User extends BaseModel{
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), userId, userName, units, armyLists, roles);
+		return Objects.hash(getId(), passCode, userName, units, armyLists, roles);
 	}
 
 	@Override
@@ -115,14 +133,14 @@ public class User extends BaseModel{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(getId(), other.getId()) && Objects.equals(userId, other.userId)
-				&& Objects.equals(userName, other.userName) && Objects.equals(units, other.units)
+		return Objects.equals(getId(), other.getId()) && Objects.equals(passCode, other.passCode) && Objects.equals(logIn, other.logIn)
+				&& Objects.equals(userName, other.userName) && Objects.equals(logInTime, other.logInTime) && Objects.equals(units, other.units)
 				&& Objects.equals(armyLists, other.armyLists) && Objects.equals(roles, other.roles);
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + getId() + ", userName=" + userName + ", userId=" + userId + ", units=" + units + ", armyLists="
-				+ armyLists + ", roles=" + roles + "]";
+		return "User [userName=" + userName + ", passCode=" + passCode + ", logIn=" + logIn + ", logInTime=" + logInTime
+				+ ", units=" + units + ", armyLists=" + armyLists + ", roles=" + roles + "]";
 	}
 }

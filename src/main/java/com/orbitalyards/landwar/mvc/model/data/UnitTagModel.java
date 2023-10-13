@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 /***
  * Convenience model class for rules tags.
  */
-public class UnitTag {
+public class UnitTagModel {
 
 	@JsonProperty(defaultValue = "0")
 	private int id;
@@ -16,7 +16,7 @@ public class UnitTag {
 	private int rulesId;
 	
 	
-	public UnitTag() {}
+	public UnitTagModel() {}
 
 
 	@JsonGetter(value = "tagId")

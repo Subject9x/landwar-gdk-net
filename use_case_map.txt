@@ -1,0 +1,27 @@
+User-Case
+-----------
+
+(USER)
+[CONTROLLER]            [SERVICE]                                 [REPO]
+-->createUser
+                        + check username------------------------>
+                                                                  +
+                        + persist new user---------------------->
+                                                                  + generate user hash
+                                                                  + save user
+                        + error back    <-------------------------+ error: persistence problem
+<-----------------------+ return hashID <-------------------------+ return hashId
+
+              
+-->checkInUser
+                        + 
+              
+              
+-->deleteUser
+                        + check user -------------------------->  + 
+                        
+              
+-->updateUser
+              
+              
+              

@@ -51,7 +51,7 @@ public final class UnitInfoEntry {
 	private int range;
 	
 	@JsonProperty(defaultValue = "[]", required = false)
-	private List<UnitTag> tags;
+	private List<UnitTagModel> tags;
 
 	@JsonProperty(defaultValue = "", required = true)
 	private String desc;
@@ -157,14 +157,14 @@ public final class UnitInfoEntry {
 		this.range = range;
 	}
 
-	public void setTags(List<UnitTag> newTags) {
+	public void setTags(List<UnitTagModel> newTags) {
 		this.tags = newTags;
 	}
 	
-	public List<UnitTag> getTags() {
+	public List<UnitTagModel> getTags() {
 		//defensive copy
-		List<UnitTag> out = new ArrayList<UnitTag>();
-		tags.stream().forEach((UnitTag t) -> {
+		List<UnitTagModel> out = new ArrayList<UnitTagModel>();
+		tags.stream().forEach((UnitTagModel t) -> {
 			out.add(t);
 		});
 		return out;

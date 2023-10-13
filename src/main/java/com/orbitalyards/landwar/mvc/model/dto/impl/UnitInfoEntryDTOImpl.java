@@ -1,18 +1,24 @@
 package com.orbitalyards.landwar.mvc.model.dto.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orbitalyards.landwar.jpa.model.UnitInfo;
+import com.orbitalyards.landwar.jpa.model.ref.UnitTag;
 import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
+import com.orbitalyards.landwar.mvc.model.data.UnitTagModel;
 import com.orbitalyards.landwar.mvc.model.dto.UnitInfoEntryDTO;
 
+@Component
 public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 
 	private static Logger logger = LoggerFactory.getLogger(UnitInfoEntryDTOImpl.class);
@@ -72,11 +78,14 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 		unitEntry.setSize(jpaModel.getSize());
 		unitEntry.setUnitName(new String(jpaModel.getUnitName()));
 		
-//		List<String> tags = new ArrayList<String>();
-//		jpaModel.getTags().stream().forEach((UnitTagModel t)->{
-//			tags.add(null)
-//		});
-//		unitEntry.setTags(jpaModel.getTags());
+		List<UnitTagModel> tags = new ArrayList<UnitTagModel>();
+		jpaModel.getTags().stream().forEach((UnitTag t)->{
+			UnitTagModel unitTag = new UnitTagModel();
+			unitTag.setId(t.getTagId());
+			unitTag.setRulesId(t.getRulesId());
+			tags.add(unitTag);
+		});
+		unitEntry.setTags(tags);
 		
 		return unitEntry;
 	}
@@ -95,7 +104,15 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 		jpaModel.setRange(entry.getRange());
 		jpaModel.setSize(entry.getSize());
 		jpaModel.setUnitName(entry.getUnitName());
-//		jpaModel.setTags(entry.getTags());
+		
+		Set<UnitTag> tags = new HashSet<UnitTag>();
+		for(UnitTagModel t : entry.getTags()) {
+			UnitTag jpaTag = new UnitTag();
+			jpaTag.setRulesId(t.getRulesId());
+			jpaTag.setTagId(t.getId());
+			tags.add(jpaTag);
+		}
+		jpaModel.setTags(tags);
 		
 		return jpaModel;
 	}	
@@ -110,6 +127,8 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 	
 	public List<UnitInfo> listPersistFromModels(List<UnitInfoEntry> entries){
 		List<UnitInfo> modelList = new ArrayList<UnitInfo>();
+		
+		entries.stream().forEach((UnitInfoEntry e) -> {modelList.add(toPersistFromModel(e, new UnitInfo()));});
 		
 		//TODO - will have to query DB for existing models to update.
 		

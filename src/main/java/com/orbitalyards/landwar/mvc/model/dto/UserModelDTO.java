@@ -14,7 +14,7 @@ public interface UserModelDTO {
 	
 	public String toJsonFromModel(UserModel model) throws JsonProcessingException;
 	
-	public UserModel toModelFromPersist(User jpaModel);
+	public UserModel toModelFromPersist(UserModel userModel, User jpaModel);
 	
 	public User toPersistFromModel(UserModel entry, User jpaModel);
 	
