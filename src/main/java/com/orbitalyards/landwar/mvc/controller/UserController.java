@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.orbitalyards.landwar.mvc.model.body.UserResponse;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
 import com.orbitalyards.landwar.service.impl.AppUserServiceImpl;
 
@@ -27,49 +29,56 @@ public class UserController {
 	private AppUserServiceImpl appUserService;
 	
 	@GetMapping(path = "/create", produces = "application/json")
-	public ResponseEntity<UserModel> userCreate(@RequestParam String userName, @RequestParam String userCode){
+	public ResponseEntity<UserResponse> userCreate(@RequestBody UserModel requestUser){
 		
-		logger.debug(userName);
-		UserModel newUser = null;
+		logger.debug(requestUser.getUserName());
 		
-		try {
-			newUser = appUserService.registerUser(userName, userCode);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return new ResponseEntity<UserModel>(newUser, HttpStatus.INTERNAL_SERVER_ERROR);
+		UserResponse response = appUserService.registerUser(requestUser.getUserName(), requestUser.getUserCode());
+		
+		if(response.getError()) {
+			return new ResponseEntity<UserResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(newUser == null) {
-			newUser = new UserModel();
-			newUser.setError("problem creating account.");
-			return new ResponseEntity<UserModel>(newUser, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	
-		return new ResponseEntity<UserModel>(newUser, HttpStatus.OK);
+		return new ResponseEntity<UserResponse>(response, HttpStatus.OK);
 	}
 	
-	@PatchMapping(path = "/delete")
-	public String userDelete(@RequestParam String userName, @RequestParam String userCode) throws Exception{
-		logger.debug(userName);
+	@PatchMapping(path = "/delete", produces="application/json")
+	public ResponseEntity<UserResponse> userDelete(@RequestBody UserModel requestUser) throws Exception{
+		logger.debug(requestUser.getUserName());
+
+		UserResponse userResponse = appUserService.deleteUser(requestUser.getUserName(), requestUser.getUserCode());
 		
-		appUserService.deleteUser(userName, userCode);
+		if(userResponse.getError()) {
+			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return "";
+		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/login", produces = "application/json")
-	public ResponseEntity<UserModel> userLogin(@RequestParam String userName, @RequestParam String usercode) throws Exception{
-		logger.debug(userName);
-		UserModel newUser = null;
+	public ResponseEntity<UserResponse> userLogin(@RequestBody UserModel requestUser) throws Exception{
+		logger.debug(requestUser.getUserName());
 		
+		UserResponse userResponse = appUserService.loginUser(requestUser.getUserName(), requestUser.getUserCode());
 		
+		if(userResponse.getError()) {
+			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return null;
+		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
 	}
 	
 	@PatchMapping(path = "/logout")
-	public String userLogout() throws Exception{
+	public ResponseEntity<UserResponse> userLogout(@RequestBody UserModel requestUser) throws Exception{
+		logger.debug(requestUser.getUserName());
 		
-		return "";
+		UserResponse userResponse = appUserService.logoutUser(requestUser.getUserName(), requestUser.getUserCode());
+		
+		if(userResponse.getError()) {
+
+			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
 	}
 }

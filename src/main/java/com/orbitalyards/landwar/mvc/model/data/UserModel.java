@@ -1,12 +1,7 @@
 package com.orbitalyards.landwar.mvc.model.data;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -30,55 +25,35 @@ public class UserModel {
 	
 	@JsonProperty(defaultValue = "false")
 	private boolean loggedIn;
-	
-	@JsonProperty(defaultValue = "")
-	private String error;
-	
+		
 	public UserModel() {}
-	
-	public UserModel(String userName, String userCode, boolean loggedIn) {
-		this.userName = userName;
-		this.userCode = userCode;
-		this.loggedIn = loggedIn;
-	}
 
-	@JsonGetter(value = "")
 	public String getUserName() {
 		return userName;
 	}
 
-	@JsonSetter(value = "")
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	@JsonGetter(value = "")
 	public String getUserCode() {
 		return userCode;
 	}
 
-	@JsonSetter(value = "")
 	public void setUserCode(String userCode) {
 		this.userCode = userCode;
 	}
 
-	@JsonGetter(value = "")
 	public boolean getLoggedIn() {
 		return loggedIn;
 	}
-
-	@JsonSetter(value = "")
+	
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
 
-	@JsonGetter(value = "")
-	public String getError() {
-		return error;
-	}
-
-	@JsonSetter(value = "")
-	public void setError(String error) {
-		this.error = error;
+	@Override
+	public String toString() {
+		return "UserModel [userName=" + userName + ", userCode=" + userCode + ", loggedIn=" + loggedIn + "]";
 	}
 }
