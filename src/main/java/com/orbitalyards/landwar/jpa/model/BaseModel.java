@@ -30,11 +30,12 @@ public class BaseModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "CREATE_DT_TM", insertable = true, updatable = true)
+	@Version
+	@Column(name = "CREATE_DT_TM", insertable = true, updatable = false)
 	@Temporal(TemporalType.DATE)
 	private Timestamp createDate;
 	
-	@Version
+	
 	@Column(name = "UPDATE_DT_TM", insertable = true, updatable = true)
 	@Temporal(TemporalType.DATE)
 	private Timestamp updateDate;
