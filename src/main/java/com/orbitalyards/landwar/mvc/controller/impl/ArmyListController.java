@@ -1,4 +1,4 @@
-package com.orbitalyards.landwar.mvc.controller;
+package com.orbitalyards.landwar.mvc.controller.impl;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

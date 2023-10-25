@@ -1,26 +1,28 @@
 package com.orbitalyards.landwar.mvc.model.body;
 
+import java.util.Objects;
+
+import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
+import com.orbitalyards.landwar.service.AppUserService;
 import com.orbitalyards.landwar.service.exception.UserServiceException;
 
 /**
- * simple json object for generic controller responses.
+ * Wrapper object for getting information out of {@linkplain AppUserService} implementations.
+ * Is JSON serializable with annotations.
  * @author roohr
  */
-@JsonRootName(value = "userResp")
-public class UserResponse {
+@JsonRootName(value = "response")
+public final class UserResponse extends AppResponse {
 
 	@JsonProperty(defaultValue = "")
 	private UserModel user = null;
-	
-	@JsonProperty
-	private String msg;
-	
-	@JsonProperty(defaultValue = "false")
-	private boolean error = false;
 	
 	@JsonIgnore
 	private UserServiceException userException;
@@ -31,35 +33,44 @@ public class UserResponse {
 	private UserResponse(Builder b) {
 		setUser(b.getUser());
 		setMsg(b.getMsg());
-		setError(b.getError());
 		setUserException(b.getUserException());
+		setHttpStatus(b.getHttpStatus());
+		setStatusCode(b.getStatusCode());
 	}
 	
-
 	public UserModel getUser() {
 		return user;
 	}
-
+	
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
 
+	@Override
+	@JsonGetter(value = "msg")
 	public String getMsg() {
 		return msg;
 	}
 
+	@Override
+	@JsonSetter(value = "msg")
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+	
 
-	public boolean getError() {
-		return error;
+	@Override
+	@JsonGetter(value = "statusCode")
+	public int getStatusCode() {
+		return statusCode;
 	}
 
-	public void setError(boolean error) {
-		this.error = error;
+	@Override
+	@JsonSetter(value = "statusCode")
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
 	}
-
+	
 	public UserServiceException getUserException() {
 		return userException;
 	}
@@ -67,14 +78,14 @@ public class UserResponse {
 	public void setUserException(UserServiceException userException) {
 		this.userException = userException;
 	}
-	
-	
+
 	public static class Builder{
 		
 		private UserModel user = null;
 		private String msg = "";
-		private boolean error = false;
 		private UserServiceException userException = null;
+		private HttpStatus httpStatus = HttpStatus.OK;
+		private int statusCode = 0;
 		
 		public Builder() {}
 		
@@ -91,14 +102,19 @@ public class UserResponse {
 			this.msg = msg;
 			return this;
 		}
-
-		public Builder setError(boolean error) {
-			this.error = error;
-			return this;
-		}
 		
 		public Builder setUserException(UserServiceException userException) {
 			this.userException = userException;
+			return this;
+		}
+
+		public Builder setStatusCode(int statusCode) {
+			this.statusCode = statusCode;
+			return this;
+		}
+
+		public Builder setHttpStatus(HttpStatus httpStatus) {
+			this.httpStatus = httpStatus;
 			return this;
 		}
 		
@@ -110,12 +126,40 @@ public class UserResponse {
 			return msg;
 		}
 
-		public boolean getError() {
-			return error;
-		}
-
 		public UserServiceException getUserException() {
 			return userException;
 		}
+
+		public HttpStatus getHttpStatus() {
+			return httpStatus;
+		}
+		
+		public int getStatusCode() {
+			return statusCode;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(httpStatus, msg, statusCode, user, userException);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserResponse other = (UserResponse) obj;
+		return httpStatus == other.httpStatus && Objects.equals(msg, other.msg) && statusCode == other.statusCode
+				&& Objects.equals(user, other.user) && Objects.equals(userException, other.userException);
+	}
+
+	@Override
+	public String toString() {
+		return "UserResponse [user=" + user + ", msg=" + msg + ", statusCode=" + statusCode + ", userException="
+				+ userException + ", httpStatus=" + httpStatus + "]";
 	}
 }

@@ -1,20 +1,16 @@
 package com.orbitalyards.landwar.service;
 
-import java.util.List;
-
-import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
-import com.orbitalyards.landwar.mvc.model.data.UserModel;
+import com.orbitalyards.landwar.mvc.model.body.AppResponse;
+import com.orbitalyards.landwar.mvc.model.body.UnitResponse;
 
 public interface UnitInfoService {
 	
-	public UnitInfoEntry createUnit(UnitInfoEntry unitInfo);
+	public AppResponse createUnits(UnitResponse unitInfoPack);
 	
-	public List<UnitInfoEntry> getUnitsByUser(UserModel userModel);
+	public AppResponse getUnitsByUser(String userName, String userCode, int count, String sortBy);
 	
-	public String updateUnit(UnitInfoEntry unitInfo);
+	public AppResponse updateUnit(UnitResponse unitInfoPack);
 	
-	public String deleteUnit(UnitInfoEntry unitInfo);
-	
-	public String deleteUnits(List<UnitInfoEntry> unitList);
+	public AppResponse deleteUnits(UnitResponse unitInfoList);
 	
 }

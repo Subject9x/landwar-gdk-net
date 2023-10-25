@@ -1,5 +1,6 @@
 package com.orbitalyards.landwar.mvc.model.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -28,6 +29,13 @@ public class UserModel {
 		
 	public UserModel() {}
 
+	@JsonIgnore
+	public UserModel(String userName) {
+		//used for errors and exception handling
+		this.userName = userName;
+	}
+	
+	
 	public String getUserName() {
 		return userName;
 	}

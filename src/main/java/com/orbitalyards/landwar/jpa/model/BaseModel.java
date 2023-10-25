@@ -51,7 +51,7 @@ public class BaseModel implements Serializable {
 	}
 
 	public Long getId() {
-		return id;
+		return id == null ? Long.valueOf(0l) : id;
 	}
 
 	public void setId(Long id) {

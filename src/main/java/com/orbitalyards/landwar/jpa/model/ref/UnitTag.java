@@ -42,10 +42,12 @@ public class UnitTag extends BaseModel {
 		this.rulesId = rulesId;
 	}
 
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), rulesId, tagId);
+		return Objects.hash(rulesId, tagId, getId(), getCreateDate(), getUpdateDate());
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -56,6 +58,6 @@ public class UnitTag extends BaseModel {
 		if (getClass() != obj.getClass())
 			return false;
 		UnitTag other = (UnitTag) obj;
-		return Objects.equals(getId(), other.getId()) && rulesId == other.rulesId && tagId == other.tagId;
+		return rulesId == other.rulesId && tagId == other.tagId && getId() == other.getId() && getCreateDate().equals(other.getCreateDate());
 	}
 }

@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.orbitalyards.landwar.jpa.model.User;
 import com.orbitalyards.landwar.jpa.model.ref.Role;
 import com.orbitalyards.landwar.jpa.repository.UserRepository;
 import com.orbitalyards.landwar.jpa.repository.UserRoleRepository;
+import com.orbitalyards.landwar.mvc.model.body.AppResponse;
 import com.orbitalyards.landwar.mvc.model.body.UserResponse;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
 import com.orbitalyards.landwar.mvc.model.dto.UserModelDTO;
@@ -38,12 +40,7 @@ public class AppUserServiceImpl implements AppUserService {
 	private UserRoleRepository userRoleRepository;
 	
 	@Override
-	public UserResponse registerUser(String userName, String userCode) {
-		
-		UserResponse validate = validateUserInput(userName, userCode);
-		if(validate != null) {
-			return validate;
-		}
+	public AppResponse registerUser(String userName, String userCode) {
 		
 		Optional<User> exists = null;
 		try {
@@ -52,7 +49,9 @@ public class AppUserServiceImpl implements AppUserService {
 		catch(Exception e) {
 			logger.error(e.getMessage());
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
+			UserResponse resp = new UserResponse.Builder()
+									.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+									.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
 									.setMsg(userError.getMessage())
 									.setUserException(userError)
 									.build();
@@ -61,7 +60,9 @@ public class AppUserServiceImpl implements AppUserService {
 		
 		if(!exists.isEmpty() || exists.isPresent()) {
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.EXIST_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
+			UserResponse resp = new UserResponse.Builder()
+									.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+									.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
 									.setMsg(userError.getMessage())
 									.setUserException(userError)
 									.build();
@@ -81,57 +82,59 @@ public class AppUserServiceImpl implements AppUserService {
 		catch(Exception e) {
 			logger.error(e.getMessage());
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
 		if(newUser == null || newUser.getId() == 0L) {
 			logger.error("User failed to persist: {}", newUser);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
-		UserResponse resp = new UserResponse.Builder().setUser(userModelDTO.toModelFromPersist(newUserModel, newUser))
+		UserResponse resp = new UserResponse.Builder()
+								.setUser(userModelDTO.toModelFromPersist(newUserModel, newUser))
 								.setMsg("User created successfully")
 								.build();
 		return resp;
 	}
 	
 	@Override
-	public UserResponse loginUser(String userName, String userCode) {
+	public AppResponse loginUser(String userName, String userCode) {
 		return updateUserLogin(userName, userCode, true);
 	}
 	
 
 	@Override
-	public UserResponse logoutUser(String userName, String userCode) {
+	public AppResponse logoutUser(String userName, String userCode) {
 		return updateUserLogin(userName, userCode, false);
 	}
 	
 	@Override
-	public UserResponse deleteUser(String userName, String userCode)  {
-		
-		UserResponse validate = validateUserInput(userName, userCode);
-		if(validate != null) {
-			return validate;
-		}
+	public AppResponse deleteUser(String userName, String userCode)  {
 		
 		Optional<User> exists = userRepository.findByUserName(userName);
 		
 		if(exists.isEmpty() || !exists.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.EMPTY_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
@@ -140,10 +143,12 @@ public class AppUserServiceImpl implements AppUserService {
 		if(!user.getPassCode().equals(userCode)) {
 			logger.error(UserServiceException.errors.USER_BAD_CODE.msg() + " {}", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.USER_BAD_CODE.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
@@ -153,10 +158,12 @@ public class AppUserServiceImpl implements AppUserService {
 		catch(Exception e) {
 			logger.error(UserServiceException.errors.JPA_GENERAL.msg() + " {}", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 
@@ -168,10 +175,9 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 	
 	@Override
-	public UserResponse adminDeleteUser(String userName, String adminUser, String adminCode) {
+	public AppResponse adminDeleteUser(String userName, String adminUser, String adminCode) {
 		
-		
-		UserResponse validated = validateUserRole(adminUser, adminCode, Arrays.asList("ADMIN")); 
+		AppResponse validated = validateUserRole(adminUser, adminCode, Arrays.asList("ADMIN")); 
 		if(validated != null) {
 			return validated;
 		}
@@ -181,10 +187,12 @@ public class AppUserServiceImpl implements AppUserService {
 		if(toDelete.isEmpty() || !toDelete.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.EMPTY_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
@@ -194,10 +202,12 @@ public class AppUserServiceImpl implements AppUserService {
 		catch(Exception e) {
 			logger.error(e.getMessage());
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		UserResponse resp = new UserResponse.Builder()
@@ -207,37 +217,40 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 	
 	@Override
-	public String updateUser(UserModel userModel)  throws Exception, UserServiceException{
-		
+	public AppResponse updateUser(String userName, String userCode){
+		//TODO - use case?
 		Optional<User> exists = userRepository.findById(0l);
 		
 		if(exists.isEmpty() || !exists.isPresent()) {
-			throw new UserServiceException(UserServiceException.errors.EMPTY_USERNAME.msg());
+			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
+			UserServiceException userError = new UserServiceException(UserServiceException.errors.EMPTY_USERNAME.msg());
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
+			return resp;
 		}
-		
-		
 		
 		return null;
 	}
 
 	
 	@Override
-	public UserResponse updateUserRole( String userName, String userCode, List<String> roles){
-		
-		UserResponse validate = validateUserInput(userName, userCode);
-		if(validate != null) {
-			return validate;
-		}
-		
+	public AppResponse updateUserRole( String userName, String userCode, List<String> roles){
+	
 		Optional<User> exists = userRepository.findByUserName(userName);
 		
 		if(exists.isEmpty() || !exists.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.EMPTY_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
@@ -260,10 +273,12 @@ public class AppUserServiceImpl implements AppUserService {
 		catch(Exception e) {
 			logger.error(e.getMessage());
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		logger.info("User[{}] updated roles successfully.");
@@ -272,53 +287,32 @@ public class AppUserServiceImpl implements AppUserService {
 								.build();
 		return resp;
 	}
-
-	private UserResponse validateUserInput(String userName, String userCode){
-		//TODO - replace with validators at some point.
-		if(userName == null || userName.isEmpty() || userName.isBlank()) {
-			UserServiceException userError = new UserServiceException(UserServiceException.errors.EMPTY_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
-			return resp;
-		}
-		
-		if(userCode == null || userCode.isEmpty() || userCode.isBlank()) {
-			UserServiceException userError = new UserServiceException(UserServiceException.errors.EMPTY_USERCODE.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
-			return resp;
-		}
-		return null;
-	}
 	
-	private UserResponse validateUserRole(String userName, String userCode, List<String> roles){
-		
-		//validate admin user
-		validateUserInput(userName, userCode);
-		
+	private AppResponse validateUserRole(String userName, String userCode, List<String> roles){
+				
 		Optional<User> exists = userRepository.findByUserName(userName);
 		
 		if(!Optional.empty().isEmpty() || !Optional.empty().isPresent()) {
 			logger.error("User[{}] doesn't exist in database.", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.EXIST_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
 		if(!exists.get().getPassCode().equals(userCode)) {
 			logger.error("User[{}] failed pass-code match.", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.USER_BAD_CODE.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
@@ -333,42 +327,42 @@ public class AppUserServiceImpl implements AppUserService {
 		if(!userRoles.containsAll(roles)) {
 			logger.error("User[{}] missing roles [" + roles.toString() + "]", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.USER_ROLE_MATCH.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.UNAUTHORIZED)
+					.setStatusCode(HttpStatus.UNAUTHORIZED.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		return null;
 	}
 	
-	private UserResponse updateUserLogin(String userName, String userCode, boolean loginVal){
-		
-		UserResponse validate = validateUserInput(userName, userCode);
-		if(validate != null) {
-			return validate;
-		}
-		
+	private AppResponse updateUserLogin(String userName, String userCode, boolean loginVal){
 
 		Optional<User> exists = userRepository.findByUserName(userName);
 		
 		if(!Optional.empty().isEmpty() || !Optional.empty().isPresent()) {
 			logger.error("User[{}] doesn't exist in database.", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.EXIST_USERNAME.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
 		if(!exists.get().getPassCode().equals(userCode)) {
 			logger.error("User[{}] failed pass-code match.", userName);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.USER_BAD_CODE.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.BAD_REQUEST)
+					.setStatusCode(HttpStatus.BAD_REQUEST.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
@@ -391,20 +385,24 @@ public class AppUserServiceImpl implements AppUserService {
 		catch(Exception e) {
 			logger.error(e.getMessage());
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
 		if(exists.get().getLogIn() != loginVal) {
 			logger.error("Uncaught JPA exception on user {}", exists.get().getUserName());
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
-			UserResponse resp = new UserResponse.Builder().setError(true)
-									.setMsg(userError.getMessage())
-									.setUserException(userError)
-									.build();
+			UserResponse resp = new UserResponse.Builder()
+					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+					.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.setMsg(userError.getMessage())
+					.setUserException(userError)
+					.build();
 			return resp;
 		}
 		
