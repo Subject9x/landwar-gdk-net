@@ -4,7 +4,9 @@ package com.orbitalyards.landwar.mvc.controller;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -12,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.orbitalyards.landwar.LandwarGdkNetApplication;
 import com.orbitalyards.landwar.jpa.dao.JPATestRig;
 import com.orbitalyards.landwar.jpa.repository.UnitInfoRepository;
 import com.orbitalyards.landwar.jpa.repository.UserRepository;
@@ -20,9 +23,9 @@ import com.orbitalyards.landwar.service.AppUserService;
 import com.orbitalyards.landwar.service.impl.AppUserServiceImpl;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
+@SpringBootTest(classes = LandwarGdkNetApplication.class)
 public class UserControllerTest extends JPATestRig{
-
+	
 	@Autowired
 	private MockMvc mockMvc;
 	

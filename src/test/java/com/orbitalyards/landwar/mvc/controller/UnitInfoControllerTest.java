@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.orbitalyards.landwar.mvc.controller.impl.UnitInfoController;
 import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
 
 @RunWith(SpringRunner.class)
