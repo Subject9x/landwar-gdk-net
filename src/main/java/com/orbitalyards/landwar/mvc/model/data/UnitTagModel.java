@@ -1,6 +1,7 @@
 package com.orbitalyards.landwar.mvc.model.data;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -15,8 +16,13 @@ public class UnitTagModel {
 	@JsonProperty(defaultValue = "0")
 	private int rulesId;
 	
-	
 	public UnitTagModel() {}
+	
+	@JsonIgnore
+	public UnitTagModel(int tagId, int rulesId) {
+		this.id = tagId;
+		this.rulesId = rulesId;
+	}
 
 
 	@JsonGetter(value = "tagId")

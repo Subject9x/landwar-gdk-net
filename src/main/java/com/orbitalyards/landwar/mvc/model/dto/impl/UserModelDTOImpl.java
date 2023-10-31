@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.orbitalyards.landwar.jpa.model.User;
+import com.orbitalyards.landwar.jpa.model.AppUser;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
 import com.orbitalyards.landwar.mvc.model.dto.UserModelDTO;
 
@@ -52,7 +52,7 @@ public class UserModelDTOImpl implements UserModelDTO {
 	}
 
 	@Override
-	public UserModel toModelFromPersist(UserModel userModel, User jpaModel) {
+	public UserModel toModelFromPersist(UserModel userModel, AppUser jpaModel) {
 		
 		userModel.setUserName(jpaModel.getUserName());
 		userModel.setLoggedIn(jpaModel.getLogIn());
@@ -62,7 +62,7 @@ public class UserModelDTOImpl implements UserModelDTO {
 	}
 
 	@Override
-	public User toPersistFromModel(UserModel entry, User jpaModel) {
+	public AppUser toPersistFromModel(UserModel entry, AppUser jpaModel) {
 		
 		jpaModel.setLogIn(entry.getLoggedIn());
 		jpaModel.setUserName(entry.getUserName());

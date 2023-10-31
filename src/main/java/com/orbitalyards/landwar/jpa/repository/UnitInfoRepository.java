@@ -1,23 +1,21 @@
 package com.orbitalyards.landwar.jpa.repository;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.ListPagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.orbitalyards.landwar.jpa.model.AppUser;
 import com.orbitalyards.landwar.jpa.model.UnitInfo;
-import com.orbitalyards.landwar.jpa.model.User;
 
 @Repository
-public interface UnitInfoRepository extends ListPagingAndSortingRepository<UnitInfo, Long>, CrudRepository<UnitInfo, Long> {
+public interface UnitInfoRepository extends JpaRepository<UnitInfo, Long> {
 
-	UnitInfo findByUnitName(String unitName);
+	List<UnitInfo> findByUnitName(String unitName);
 	
-//	UnitInfo findById(Long id);
+	UnitInfo findByAppUser(AppUser appUser);
 	
-//	UnitInfo loadByUser(Long userId);
-	
-	List<UnitInfo> findAllByAppUser(User appUser);
+	List<UnitInfo> findByAppUserOrderById(AppUser appUser);
 	
 }

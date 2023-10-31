@@ -4,15 +4,21 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.orbitalyards.landwar.jpa.model.ref.UnitTag;
+import com.orbitalyards.landwar.jpa.model.map.UnitTags;
 import com.orbitalyards.landwar.mvc.model.dto.UnitInfoEntryDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 /***
@@ -23,19 +29,19 @@ import jakarta.persistence.Table;
  * 
  * @author Roohr
  */
-@Entity(name = "unitInfo")
+@Entity
 @Table(name="UNIT_INFO")
-public class UnitInfo extends BaseModel{
+public class UnitInfo extends BaseEntity<UnitInfo>{
 
-
-//	@Column(nullable=false, updatable = false, insertable = true, length=512)
-//	private String uid;
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3406778538463459437L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	@Column(nullable=false, updatable = true, insertable = true, length=64)
 	private String unitName;
 	
@@ -68,14 +74,35 @@ public class UnitInfo extends BaseModel{
 	
 	@Column(name="IMG_URL", nullable=true, updatable = true, insertable = true, length=256)
 	private String imgUrl;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	private User appUser;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-	private Set<UnitTag> tags = new HashSet<UnitTag>();
+	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "unitInfoId", fetch = FetchType.EAGER)
+	private Set<UnitTags> tags = new HashSet<UnitTags>();
+	
+	@JoinColumn(name = "appuser_id", nullable = false, updatable = false, insertable = true)
+	@ManyToOne(targetEntity = AppUser.class, fetch = FetchType.LAZY)
+	private AppUser appUser;
 	
 	public UnitInfo() {}
+	
+	@PrePersist
+	public void onPersist() {
+		super.onCreate();
+		
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		super.onUpdate();
+	}
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 	public String getUnitName() {
 		return unitName;
@@ -149,11 +176,11 @@ public class UnitInfo extends BaseModel{
 		this.range = range;
 	}
 
-	public Set<UnitTag> getTags() {
+	public Set<UnitTags> getTags() {
 		return this.tags;
 	}
 
-	public void setTags(Set<UnitTag> tags) {
+	public void setTags(Set<UnitTags> tags) {
 		this.tags = tags;
 	}
 
@@ -173,19 +200,17 @@ public class UnitInfo extends BaseModel{
 		this.imgUrl = imgUrl;
 	}
 	
-	public User getAppUser() {
+	public AppUser getAppUser() {
 		return appUser;
 	}
 
-	public void setAppUser(User appUser) {
+	public void setAppUser(AppUser appUser) {
 		this.appUser = appUser;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(armor, desc, dmgMelee, dmgRange, evade, getId(), imgUrl, move, pointsCost, range, size, tags,
-				 unitName, appUser);
-		//uid,
+		return getClass().hashCode();
 	}
 
 	@Override
@@ -197,20 +222,23 @@ public class UnitInfo extends BaseModel{
 		if (getClass() != obj.getClass())
 			return false;
 		UnitInfo other = (UnitInfo) obj;
-		return armor == other.armor && Objects.equals(desc, other.desc) && dmgMelee == other.dmgMelee
-				&& dmgRange == other.dmgRange && evade == other.evade && Objects.equals(getId(), other.getId())
-				&& Objects.equals(imgUrl, other.imgUrl) && move == other.move
+		return armor == other.armor && Objects.equals(desc, other.desc) 
+				&& dmgMelee == other.dmgMelee
+				&& dmgRange == other.dmgRange 
+				&& evade == other.evade 
+				&& Objects.equals(id, other.id)
+				&& Objects.equals(imgUrl, other.imgUrl) 
+				&& move == other.move
 				&& Float.floatToIntBits(pointsCost) == Float.floatToIntBits(other.pointsCost) && range == other.range
 				&& size == other.size && Objects.equals(tags, other.tags) && Objects.equals(unitName, other.unitName)
 				&& Objects.equals(appUser, other.appUser);
-		//&& Objects.equals(uid, other.uid)
 	}
 
 	@Override
 	public String toString() {
-		return "UnitInfo [id=" + getId() + ", unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size
+		return "UnitInfo [id=" + id + ", unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size
 				+ ", move=" + move + ", evade=" + evade + ", armor=" + armor + ", dmgMelee=" + dmgMelee + ", dmgRange="
-				+ dmgRange + ", range=" + range + ", desc=" + desc + ", imgUrl=" + imgUrl + ", appUser=" + appUser
-				+ ", tags=" + tags + "]";
+				+ dmgRange + ", range=" + range + ", desc=" + desc + ", imgUrl=" + imgUrl
+				+ ", tags=" + tags + ", appUser=" + appUser.getId() +"]";
 	}
 }

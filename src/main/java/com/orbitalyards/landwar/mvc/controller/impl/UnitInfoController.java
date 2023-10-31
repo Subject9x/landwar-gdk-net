@@ -38,6 +38,10 @@ public class UnitInfoController extends AppController{
 			response = unitInfoService.getUnitsByUser(user.getUserName(), user.getUserCode(), count, sortBy);	
 		}
 		
+		if(response.getException() != null) {
+			logger.error(response.getException().getMessage());
+		}
+		
 		return new ResponseEntity<AppResponse>(response, response.getHttpStatus());
 	}
 	
@@ -45,6 +49,10 @@ public class UnitInfoController extends AppController{
 	public ResponseEntity<AppResponse> createUnits(@RequestBody UnitResponse unitSubmit) throws Exception{
 		
 		AppResponse response = unitInfoService.createUnits(unitSubmit);
+		
+		if(response.getException() != null) {
+			logger.error(response.getException().getMessage());
+		}
 		
 		return new ResponseEntity<AppResponse>(response, response.getHttpStatus());
 	}
@@ -54,6 +62,10 @@ public class UnitInfoController extends AppController{
 		
 		AppResponse response = unitInfoService.updateUnit(unitUpload);
 		
+		if(response.getException() != null) {
+			logger.error(response.getException().getMessage());
+		}
+		
 		return new ResponseEntity<AppResponse>(response, response.getHttpStatus());
 	}
 	
@@ -61,6 +73,10 @@ public class UnitInfoController extends AppController{
 	public ResponseEntity<AppResponse> deleteUnitInfo(@RequestBody UnitResponse unitUpload) throws Exception{
 		
 		AppResponse response = unitInfoService.deleteUnits(unitUpload);
+		
+		if(response.getException() != null) {
+			logger.error(response.getException().getMessage());
+		}
 		
 		return new ResponseEntity<AppResponse>(response, response.getHttpStatus());
 	}

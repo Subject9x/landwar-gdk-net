@@ -2,6 +2,8 @@ package com.orbitalyards.landwar.jpa.model.map;
 
 import java.util.Objects;
 
+import com.orbitalyards.landwar.jpa.model.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +13,12 @@ import jakarta.persistence.Table;
 
 @Entity(name = "unitArmyMap")
 @Table(name="UNIT_ARMY_MAP")
-public class UnitArmyMap {
+public class UnitArmyMap extends BaseEntity<UnitArmyMap>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

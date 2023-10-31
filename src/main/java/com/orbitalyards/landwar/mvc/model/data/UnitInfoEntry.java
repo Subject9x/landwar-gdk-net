@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -20,8 +19,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @JsonRootName(value = "unitInfo")
 public final class UnitInfoEntry {
 
-	@JsonIgnore
-	private Long id;
+	//we propagate this for handling updates to existing units.
+	@JsonProperty(defaultValue = "0", required = true, value = "entryId")
+	private long id;
 	
 	@JsonProperty(defaultValue = "", required = true)
 	private String unitName;
@@ -66,6 +66,15 @@ public final class UnitInfoEntry {
 		this.imgUrl = "";
 	}
 	
+	@JsonGetter("entryId")
+	public long getId() {
+		return id;
+	}
+	
+	@JsonSetter("entryId")
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	@JsonGetter("name")
 	public String getUnitName() {
@@ -209,6 +218,7 @@ public final class UnitInfoEntry {
 		clone.setSize(getSize());
 		clone.setTags(getTags());
 		clone.setUnitName(new String(getUnitName()));
+		clone.setId(getId());
 		
 		return clone;
 	}
@@ -216,7 +226,7 @@ public final class UnitInfoEntry {
 
 	@Override
 	public String toString() {
-		return "UnitInfoEntry [unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size + ", move="
+		return "UnitInfoEntry [entryId=" + id + ", unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size + ", move="
 				+ move + ", evade=" + evade + ", armor=" + armor + ", dmgMelee=" + dmgMelee + ", dmgRange=" + dmgRange
 				+ ", range=" + range + ", desc=" + desc + ", imgUrl=" + imgUrl + ", tags={" + tags.stream().toArray() +"}]";
 	}

@@ -9,12 +9,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import com.orbitalyards.landwar.jpa.model.AppUser;
 import com.orbitalyards.landwar.jpa.model.ArmyList;
 import com.orbitalyards.landwar.jpa.model.UnitInfo;
-import com.orbitalyards.landwar.jpa.model.User;
-import com.orbitalyards.landwar.jpa.model.map.UserRoleMap;
+import com.orbitalyards.landwar.jpa.model.map.UnitTags;
 import com.orbitalyards.landwar.jpa.model.ref.Role;
-import com.orbitalyards.landwar.jpa.model.ref.UnitTag;
+import com.orbitalyards.landwar.jpa.model.ref.UnitTagRef;
 
 import jakarta.persistence.EntityManager;
 
@@ -29,7 +29,7 @@ public abstract class JPATestRig {
 	
 	public void initMockTags(EntityManager em) {
 		for(int i=0; i<31; i++) {
-			UnitTag t = new UnitTag();
+			UnitTagRef t = new UnitTagRef();
 			t.setTagId(i);
 			em.persist(t);
 		}
@@ -57,7 +57,7 @@ public abstract class JPATestRig {
 		setUserTestTotal(tote);
 		
 		for(int i=0; i < tote; i++) {
-			User u = createMockUser(em);
+			AppUser u = createMockUser(em);
 			em.persist(u);
 			
 		}
@@ -65,9 +65,9 @@ public abstract class JPATestRig {
 	}
 	
 	
-	public User createMockUser(EntityManager em) {
+	public AppUser createMockUser(EntityManager em) {
 		
-		User u = new User();
+		AppUser u = new AppUser();
 		u.setUserName(generateRandoString());
 		
 		Set<Role> roles = new HashSet<Role>();
@@ -97,17 +97,18 @@ public abstract class JPATestRig {
 		u.setSize(ThreadLocalRandom.current().nextInt(1, 8));
 		u.setUnitName(generateRandoString());
 		
-		Set<UnitTag> tags = new HashSet<UnitTag>();
+		Set<UnitTags> tags = new HashSet<UnitTags>();
 		
 		int t = ThreadLocalRandom.current().nextInt(0, 6);
 		
 		for(int i=0; i < t; i++) {
-			UnitTag junk = new UnitTag();
-			junk.setTagId(ThreadLocalRandom.current().nextInt(0, 30));
-			junk.setRulesId(1);
+			UnitTags junk = new UnitTags();
+			junk.setUnitTagId(ThreadLocalRandom.current().nextInt(0, 47));
+			junk.setRulesId(1);			
 			tags.add(junk);
 		}
 		u.setTags(tags);
+		
 		
 		return u;
 	}

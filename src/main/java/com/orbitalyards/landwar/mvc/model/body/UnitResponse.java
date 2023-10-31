@@ -21,6 +21,12 @@ public final class UnitResponse extends AppResponse {
 	private List<UnitInfoEntry> units = new ArrayList<UnitInfoEntry>();
 	
 	@JsonProperty
+	private List<UnitInfoEntry> deleted = new ArrayList<UnitInfoEntry>();
+	
+	@JsonProperty
+	private List<UnitInfoEntry> added = new ArrayList<UnitInfoEntry>();
+	
+	@JsonProperty
 	private UserModel user;
 	
 	public UnitResponse() {}
@@ -105,6 +111,22 @@ public final class UnitResponse extends AppResponse {
 		this.user = user;
 	}
 	
+	public List<UnitInfoEntry> getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(List<UnitInfoEntry> deleted) {
+		this.deleted = deleted;
+	}
+
+	public List<UnitInfoEntry> getAdded() {
+		return added;
+	}
+
+	public void setAdded(List<UnitInfoEntry> added) {
+		this.added = added;
+	}
+
 	@Override
 	@JsonGetter(value = "msg")
 	public String getMsg() {
@@ -130,10 +152,9 @@ public final class UnitResponse extends AppResponse {
 		this.statusCode = statusCode;
 	}
 	
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(httpStatus, msg, statusCode, units, user);
+		return Objects.hash(httpStatus, msg, statusCode, units, user, added, deleted);
 	}
 
 	@Override
@@ -145,8 +166,12 @@ public final class UnitResponse extends AppResponse {
 		if (getClass() != obj.getClass())
 			return false;
 		UnitResponse other = (UnitResponse) obj;
-		return httpStatus == other.httpStatus && Objects.equals(msg, other.msg) && statusCode == other.statusCode
-				&& Objects.equals(units, other.units) && Objects.equals(user, other.user);
+		return httpStatus == other.httpStatus && Objects.equals(msg, other.msg) 
+				&& statusCode == other.statusCode
+				&& Objects.equals(units, other.units) 
+				&& Objects.equals(user, other.user)
+				&& Objects.equals(added, other.added)
+				&& Objects.equals(deleted, other.deleted);
 	}
 
 	@Override

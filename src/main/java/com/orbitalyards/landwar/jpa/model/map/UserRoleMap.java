@@ -1,8 +1,10 @@
 package com.orbitalyards.landwar.jpa.model.map;
 
+import com.orbitalyards.landwar.jpa.model.BaseEntity;
+
 //@Entity(name = "userRole")
 //@Table(name = "USER_ROLES")
-public class UserRoleMap {
+public class UserRoleMap extends BaseEntity<UserRoleMap>{
 //	
 //	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)

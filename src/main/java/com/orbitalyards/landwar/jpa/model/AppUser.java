@@ -11,9 +11,11 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 /***
@@ -22,38 +24,48 @@ import jakarta.persistence.Table;
  * 
  * @author roohr
  */
-@Entity(name = "appUser")
-@Table(name = "APP_USERS")
-public class User extends BaseModel{
+@Entity
+@Table(name = "APP_USER")
+public class AppUser extends BaseEntity<AppUser>{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6577760273796675212L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	@Column(name="USERNAME", nullable=false, updatable = true, insertable = true, length = 32)
-	private String userName;
+	private String userName = "";
 	
 	@Column(name="PASSCODE", nullable=false, updatable = true, insertable = true, length = 64)
-	private String passCode;
+	private String passCode = "";
 	
 	@Column(name="LOGGED_IN", nullable=false, updatable = true, insertable = true)
 	private boolean logIn = false;
 	
 	@Column(name = "LOG_IN_TIME", nullable=true, updatable = true, insertable = true)
-	private Timestamp logInTime;
+	private Timestamp logInTime = new Timestamp(0);
 	
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "appUser", fetch = FetchType.LAZY)
 	private Set<UnitInfo> units = new HashSet<UnitInfo>();
 	
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "appUser", fetch = FetchType.LAZY)
 	private Set<ArmyList> armyLists = new HashSet<ArmyList>();
 	
-	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.REFRESH}, mappedBy = "")
 	private Set<Role> roles = new HashSet<Role>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
-	public User() {}
-		
 	public String getUserName() {
 		return userName;
 	}
@@ -118,10 +130,10 @@ public class User extends BaseModel{
 		
 		return hash;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), passCode, userName, units, armyLists, roles);
+		return getClass().hashCode();
 	}
 
 	@Override
@@ -132,15 +144,20 @@ public class User extends BaseModel{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
-		return Objects.equals(getId(), other.getId()) && Objects.equals(passCode, other.passCode) && Objects.equals(logIn, other.logIn)
-				&& Objects.equals(userName, other.userName) && Objects.equals(logInTime, other.logInTime) && Objects.equals(units, other.units)
-				&& Objects.equals(armyLists, other.armyLists) && Objects.equals(roles, other.roles);
+		AppUser other = (AppUser) obj;
+		return Objects.equals(armyLists, other.armyLists) && Objects.equals(id, other.id) && logIn == other.logIn
+				&& Objects.equals(logInTime, other.logInTime) && Objects.equals(passCode, other.passCode)
+				&& Objects.equals(roles, other.roles) 
+				&& Objects.equals(units, other.units)
+				&& Objects.equals(userName, other.userName);
 	}
 
 	@Override
 	public String toString() {
-		return "User [userName=" + userName + ", passCode=" + passCode + ", logIn=" + logIn + ", logInTime=" + logInTime
-				+ ", units=" + units + ", armyLists=" + armyLists + ", roles=" + roles + "]";
+		return "User [id=" + id + ", userName=" + userName + ", passCode=" + passCode + ", logIn=" + logIn
+				+ ", logInTime=" + logInTime 
+				+ ", units=" + units 
+				+ ", armyLists=" + armyLists + ", roles=" + roles
+				+ "]";
 	}
 }

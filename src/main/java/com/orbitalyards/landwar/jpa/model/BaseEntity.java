@@ -5,59 +5,39 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
 
 /***
  * Handy basic model for all models to derive from, includes universal convenience columns and data.
  */
 @MappedSuperclass
-public class BaseModel implements Serializable {
+public abstract class BaseEntity<Id extends Serializable> implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Version
-	@Column(name = "CREATE_DT_TM", insertable = true, updatable = false)
-	@Temporal(TemporalType.DATE)
+	@Column(name = "CREATE_TM", insertable = true, updatable = false)
 	private Timestamp createDate;
 	
-	
-	@Column(name = "UPDATE_DT_TM", insertable = true, updatable = true)
-	@Temporal(TemporalType.DATE)
+	@Version
+	@Column(name = "UPDATE_TM")
 	private Timestamp updateDate;
 	
 	@PrePersist
 	protected void onCreate() {
-		this.createDate =new Timestamp(System.currentTimeMillis()); 
+		createDate = new Timestamp(System.currentTimeMillis());
 	}
 	
 	@PreUpdate
-	protected void onUpdate() {
-		this.updateDate = new Timestamp(System.currentTimeMillis());
+	public void onUpdate() {
+		updateDate = new Timestamp(System.currentTimeMillis());
 	}
-
-	public Long getId() {
-		return id == null ? Long.valueOf(0l) : id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	
 	public Optional<Timestamp> getCreateDate() {
 		return Optional.ofNullable(createDate);
 	}

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.orbitalyards.landwar.jpa.model.User;
+import com.orbitalyards.landwar.jpa.model.AppUser;
 import com.orbitalyards.landwar.jpa.model.ref.Role;
 import com.orbitalyards.landwar.jpa.repository.UserRepository;
 import com.orbitalyards.landwar.jpa.repository.UserRoleRepository;
@@ -42,7 +42,7 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public AppResponse registerUser(String userName, String userCode) {
 		
-		Optional<User> exists = null;
+		Optional<AppUser> exists = null;
 		try {
 			exists = userRepository.findByUserName(userName);
 		}
@@ -73,9 +73,9 @@ public class AppUserServiceImpl implements AppUserService {
 		newUserModel.setUserName(userName);
 		newUserModel.setUserCode(userCode);
 		
-		User newUser = null;
+		AppUser newUser = null;
 		try {
-			newUser = new User();
+			newUser = new AppUser();
 			newUser = userModelDTO.toPersistFromModel(newUserModel, newUser);
 			newUser = userRepository.save(newUser);
 		}
@@ -124,7 +124,7 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public AppResponse deleteUser(String userName, String userCode)  {
 		
-		Optional<User> exists = userRepository.findByUserName(userName);
+		Optional<AppUser> exists = userRepository.findByUserName(userName);
 		
 		if(exists.isEmpty() || !exists.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
@@ -138,7 +138,7 @@ public class AppUserServiceImpl implements AppUserService {
 			return resp;
 		}
 		
-		User user = exists.get();
+		AppUser user = exists.get();
 		
 		if(!user.getPassCode().equals(userCode)) {
 			logger.error(UserServiceException.errors.USER_BAD_CODE.msg() + " {}", userName);
@@ -182,7 +182,7 @@ public class AppUserServiceImpl implements AppUserService {
 			return validated;
 		}
 		
-		Optional<User> toDelete = userRepository.findByUserName(userName);
+		Optional<AppUser> toDelete = userRepository.findByUserName(userName);
 		
 		if(toDelete.isEmpty() || !toDelete.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
@@ -219,7 +219,7 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public AppResponse updateUser(String userName, String userCode){
 		//TODO - use case?
-		Optional<User> exists = userRepository.findById(0l);
+		Optional<AppUser> exists = userRepository.findById(0l);
 		
 		if(exists.isEmpty() || !exists.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
@@ -240,7 +240,7 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public AppResponse updateUserRole( String userName, String userCode, List<String> roles){
 	
-		Optional<User> exists = userRepository.findByUserName(userName);
+		Optional<AppUser> exists = userRepository.findByUserName(userName);
 		
 		if(exists.isEmpty() || !exists.isPresent()) {
 			logger.error(UserServiceException.errors.EMPTY_USERNAME.msg() + " {}", userName);
@@ -254,7 +254,7 @@ public class AppUserServiceImpl implements AppUserService {
 			return resp;
 		}
 		
-		User user = exists.get();
+		AppUser user = exists.get();
 		
 		Iterable<Role> jpaRoles = userRoleRepository.findAll();
 		Set<Role> updateRoles = new HashSet<Role>();
@@ -290,7 +290,7 @@ public class AppUserServiceImpl implements AppUserService {
 	
 	private AppResponse validateUserRole(String userName, String userCode, List<String> roles){
 				
-		Optional<User> exists = userRepository.findByUserName(userName);
+		Optional<AppUser> exists = userRepository.findByUserName(userName);
 		
 		if(!Optional.empty().isEmpty() || !Optional.empty().isPresent()) {
 			logger.error("User[{}] doesn't exist in database.", userName);
@@ -316,7 +316,7 @@ public class AppUserServiceImpl implements AppUserService {
 			return resp;
 		}
 		
-		User user = exists.get();
+		AppUser user = exists.get();
 		
 		if(user.getRoles() == null) {
 			logger.info("User[{}] had null role list, adding new list.", userName);
@@ -340,7 +340,7 @@ public class AppUserServiceImpl implements AppUserService {
 	
 	private AppResponse updateUserLogin(String userName, String userCode, boolean loginVal){
 
-		Optional<User> exists = userRepository.findByUserName(userName);
+		Optional<AppUser> exists = userRepository.findByUserName(userName);
 		
 		if(!Optional.empty().isEmpty() || !Optional.empty().isPresent()) {
 			logger.error("User[{}] doesn't exist in database.", userName);
@@ -374,7 +374,7 @@ public class AppUserServiceImpl implements AppUserService {
 			return resp;
 		}
 		
-		User user = exists.get();
+		AppUser user = exists.get();
 		
 		user.setLogIn(true);
 		user.setLogInTime(new Timestamp(System.currentTimeMillis()));

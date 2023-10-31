@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orbitalyards.landwar.jpa.model.UnitInfo;
-import com.orbitalyards.landwar.jpa.model.ref.UnitTag;
+import com.orbitalyards.landwar.jpa.model.map.UnitTags;
 import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
 import com.orbitalyards.landwar.mvc.model.data.UnitTagModel;
 import com.orbitalyards.landwar.mvc.model.dto.UnitInfoEntryDTO;
@@ -79,12 +79,11 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 		unitEntry.setUnitName(new String(jpaModel.getUnitName()));
 		
 		List<UnitTagModel> tags = new ArrayList<UnitTagModel>();
-		jpaModel.getTags().stream().forEach((UnitTag t)->{
-			UnitTagModel unitTag = new UnitTagModel();
-			unitTag.setId(t.getTagId());
-			unitTag.setRulesId(t.getRulesId());
-			tags.add(unitTag);
+		
+		jpaModel.getTags().stream().forEach((UnitTags t)->{
+			tags.add(new UnitTagModel(t.getUnitTagId(), t.getRulesId()));
 		});
+		
 		unitEntry.setTags(tags);
 		
 		return unitEntry;
@@ -105,14 +104,16 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 		jpaModel.setSize(entry.getSize());
 		jpaModel.setUnitName(entry.getUnitName());
 		
-		Set<UnitTag> tags = new HashSet<UnitTag>();
+		//no need for tag-update complexity, just wholly replace tags with what's being sent.
+		Set<UnitTags> updateTags = new HashSet<UnitTags>();
 		for(UnitTagModel t : entry.getTags()) {
-			UnitTag jpaTag = new UnitTag();
-			jpaTag.setRulesId(t.getRulesId());
-			jpaTag.setTagId(t.getId());
-			tags.add(jpaTag);
+			UnitTags newTag = new UnitTags();
+			newTag.setUnitTagId(t.getId());
+			newTag.setRulesId(t.getRulesId());
+			newTag.setUnitInfoId(jpaModel);
+			updateTags.add(newTag);
 		}
-		jpaModel.setTags(tags);
+		jpaModel.setTags(updateTags);
 		
 		return jpaModel;
 	}	
