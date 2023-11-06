@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title th:text="${version}">LANDWAR NET</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" th:href="@{/dist/jquery-ui/base/jquery-ui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}">
+    
+    <link rel="stylesheet" th:href="@{/css/jquery_ui_ext/jquery-ui_ext.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <!-- <link rel="stylesheet" th:href="@{/static/css/pages/rulebook/rulebook.css}"/> -->
+</head>
+<body>
+<div class="grd">
+	<div class="grd-row navbar txt--center">
+        <div class="grd-row-col-4-6">
+            <button id="navHome" type="button" class="btn" style="font-weight: 400px; background-color: #ffffff;" >Home</button>
+            <button id="navRulebooks" type="button" class="btn" style="font-weight: 400px; background-color: #ffffff;">Core Rules</button>
+            <button id="navTagRules" type="button" class="btn" style="font-weight: 400px; background-color: #ffffff;">Tag Rules</button>
+            <button id="navUnitBuild" type="button" class="btn" style="font-weight: 400px; background-color: #ffffff;">Unit Editor</button>
+            <button id="navArmyList" type="button" class="btn" style="font-weight: 400px; background-color: #ffffff;">Army List</button>
+            <button id="navCardGen" type="button" class="btn" style="font-weight: 400px; background-color: #ffffff;">Unit Card Gen</button>
+        </div>
+        <div class="grd-row-col-2-6">
+			<div class="rulesPanel">TODO USER LOGIN</div>
+		</div>
+	</div>
+	<!-- <div class="row-fill row-fill-s row-fill-l"></div> -->
+    <div class="grd-row">
+        <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-6--lg txt--center">
+            <img src="/img/logo.png" alt="" style="width:695px;height:200.5px;"/>
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-6--lg txt--center">
+            <h2><i>Game Development Kit</i></h2>
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-6--lg txt--center">
+            <p><i>LANDWAR</i> is primarily a rules-set or framework for tabletop wargaming. This application empowers Players and Game Masters
+            to acces and utilize the following:</p>
+            <ul class="list--unstyled">
+                <li>Core Rules section</li>
+                <li>TAG library</li>
+                <li>Generate custom unit cards.</li>
+                <li>Calculate unit point costs.</li>
+                <li>Create custom armies.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+
+.thinPanel{
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(107, 107, 107);
+    margin-bottom: 4px;
+}
+
+
+.colSpanner-32px{
+    min-width: 32px;
+    width: 32px
+}
+
+.colSpanner-64px{
+    min-width: 64px;
+    width: 64px
+}
+
+.sectionPanel{
+    border-style: solid;
+    border-width: 4px;
+    border-color: rgb(107, 107, 107);
+    margin-bottom: 8px;
+}
+
+.sectionOrderList{
+    line-height: 24px;
+}
+
+.subHeading{
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    padding-left: 15px;
+}
+
+.ruleTitle{
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: small;
+    font-weight: 700;
+    padding-left: 15px;
+}
+
+.rulePanel{
+    background-color: rgb(226, 226, 226);
+    border-style: solid;
+    border-width: 4px;
+    border-color: rgb(107, 107, 107);
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.rulePanel>p{
+    margin-left: 4px;
+}
+
+.infoSmall{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: small;
+    font-weight: 400;
+}

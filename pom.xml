@@ -13,9 +13,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>landwar-gdk-net</name>
 	<description>Server for landwar-gdk app</description>
+	
+	
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+		
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,6 +114,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				
 			</plugin>
 	        <plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
@@ -124,6 +128,10 @@
 	            </dependencies>
 	        </plugin>
 		</plugins>
+		<resources>
+			<resource>
+			    <directory>src/main/resources</directory>
+			</resource>
+		</resources>
 	</build>
-
 </project>

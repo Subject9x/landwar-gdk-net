@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <title th:text="${version}">LANDWAR NET</title>
+    <link rel="stylesheet" th:href="@{/dist/jquery-ui/base/jquery-ui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery_ui_ext/jquery-ui_ext.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <!-- <link rel="stylesheet" th:href="@{/static/css/pages/rulebook/rulebook.css}"/> -->
+</head>
+<body>
+    <div class="grd">
+		<div class="grd-row txt--center">
+			<div class="grd-row-col-1-6"></div>
+			<div class="grd-row-col-4-6">
+				 <h3>LANDWAR-Net</h3>
+			</div>
+			<div class="grd-row-col-1-6"></div>
+		</div>
+		<div class="grd-row txt--center">
+			<div class="grd-row-col-1-6"></div>
+			<div class="grd-row-col-4-6">
+				 <p>Online tool and development kit for the <i>LANDWAR</i> tabletop wargame system. After creating a user account, you can do the following:</p>
+				 <div class="txt--left">
+					 <ol>
+						 <li>Create and manage custom units and save them to a database.</li>
+						 <li>Create and manage army lists of the units you've made.</li>
+						 <li>Download game resources and rules.</li>
+					 </ol>
+				 </div>
+			</div>
+			<div class="grd-row-col-1-6"></div>
+		</div>
+		<div class="grd-row">
+			<div class="grd-row-col-1-6"></div>
+			<div class="grd-row-col-2-6">
+				<form onsubmit="">
+					<div class="grd">
+						<div class="grd-row">
+							<div class="grd-row-col-2-6">
+								<label>Username</label>
+							</div>
+							<div class="grd-row-col-4-6">
+								<input id="userLoginName" type="text"/>
+							</div>
+						</div>
+						<div class="grd-row">
+							<div class="grd-row-col-2-6">
+								<label>Passcode</label>
+							</div>
+							<div class="grd-row-col-4-6">
+								<input id="userLoginCode" type="text"/>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="grd-row-col-2-6"></div>
+		</div>
+	</div>
+</body>
+</html>

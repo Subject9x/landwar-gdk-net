@@ -1,0 +1,690 @@
+/*
+    All the style layering that goes on top of base_responsive.
+*/
+
+@media print {
+    .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+}
+
+.row-fill-16px{
+    min-height: 16px;
+}
+.row-fill-16px::after{
+    content:'';
+    clear:both;
+    display: table;
+}
+
+.row-fill-64px{
+    min-height: 64px;
+}
+.row-fill-64px::after{
+    content:'';
+    clear:both;
+    display: table;
+}
+
+.row-fill-128px{
+    min-height: 128px;
+}
+.row-fill-128px::after{
+    content:'';
+    clear:both;
+    display: table;
+}
+/*
+    Layout: navbar
+*/
+.navbar{
+    background-color: darkgray;
+    min-height: 48px;
+}
+
+/*
+    Page: UnitBuilder
+*/
+#unitTable{
+    border-collapse: collapse;
+    border-spacing: 8ex;
+    border: 1px solid #ddd;
+}
+
+#unitTable tr:nth-child(even){
+    background-color: #f2f2f2
+}
+
+#unitTable tr>td{
+    text-align: center;
+}
+
+#unitTable tr>td>input[type="number"]{
+    width: 90%;
+    border-width: 1px;
+}
+#unitTable tr>td>input[type="text"]{
+    width: 90%;
+    border-width: 1px;
+}
+#unitTable tr>td>label{
+    width: 99%;
+    text-align: center;
+}
+
+.unitTableHead{
+    background-color: lightgray;
+}
+.unitTableHead>th{
+    word-break: keep-all;
+    text-align: center;
+}
+
+/*
+    Page: UnitBuilder
+        + tagWindow
+*/
+#tagWindow{
+    background-color: lightgrey;
+    opacity:  100%;
+    border-color: rgb(51, 51, 51);
+    border-radius: 4px;
+    border-style: solid;
+    z-index: 100;
+    position: fixed;
+    width: 99.5%;
+    height: auto;
+    display: none;
+    top: 0;
+    left: 0;
+}
+#tagRulesListPanel{
+    background-color: white;
+    border-color: rgb(116, 115, 115);
+    border-radius: 4px;
+    border-style: solid;
+}
+
+#tagRulesDescPanel{
+    background-color: white;
+    border-color: rgb(116, 115, 115);
+    border-radius: 4px;
+    border-style: solid;
+}
+
+#tagWindow_descWarn{
+    color: chocolate;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    text-align: center;
+}
+
+.tagRulesListDiv{
+    max-height: 33em;
+    overflow-y: scroll;
+}
+
+#tagRulesListData>thead{
+    background-color: lightblue;
+}
+
+.tagRuleLineHover:hover{
+    border-color: blue;
+    border-radius: 4px;
+    border-style: solid;
+    cursor: pointer;
+}
+
+
+.tagRuleLineSelect{
+    background-color: lightsalmon;
+}
+
+
+.tagRuleLineActive{
+    background-color: lightgreen;
+}
+
+.tagRuleLineDisable{
+    background-color: lightcoral;
+}
+
+.tagRuleLineSelect{
+    border-color: lightblue;
+    border-radius: 6px;
+    border-style: solid;
+}
+
+
+/*
+    Page: TagLib
+        + tagLibView
+*/
+.tagButtonTable{
+    table-layout: auto;
+}
+/*debug*/
+.tagButtonTable td{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#tagView{
+    background-color: lightgrey;
+    opacity:  100%;
+    border-color: rgb(51, 51, 51);
+    border-radius: 4px;
+    border-style: solid;
+    z-index: 100;
+    width: 99.5%;
+    height: auto;
+    display: none;
+    top: 0;
+    left: 0;
+}
+
+.tagViewButton{
+    text-align: center;
+    align-self: center;
+}
+
+/*
+    UTIL
+*/
+.list-clean{
+    list-style-type: none;
+    margin: 0;
+    padding: 2px;
+}
+.list-clean > li{
+    margin-bottom: 5px;
+}
+
+/*
+    Unit card Print
+*/
+.uic-main{
+    min-width: 750px;
+    max-width: 750px;
+    width: 750px;
+
+    min-height: 1050px;
+    max-height: 1050px;
+    height: 1050px;
+}
+
+
+/*
+    Unit card Print - small / preview scale
+*/
+
+.uic-card-table{
+    width: 100%;
+}
+
+.uic-keyword-word{
+    font-size: small;
+    font-weight: 500;
+    line-height: 24px;
+    padding-inline-start: 20px;
+}
+
+.uic-keyword-word-sm{
+    position: inherit;
+    left: -10%;
+    font-size: xx-small;
+    font-weight: 500;
+    line-height: 12px;
+    padding-inline-start: 10px;
+}
+
+.uic-main-sm{
+    min-width: 315px;
+    max-width: 315px;
+    width: 315px;
+
+    min-height: 225px;
+    max-height: 225px;
+    height: 225px;
+
+    background-image: url("../img/unitcard_work_r1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    break-inside: avoid;
+}
+
+.uic-main{
+    min-width: 1050px;
+    max-width: 1050px;
+    width: 1050px;
+
+    min-height: 750px;
+    max-height: 750px;
+    height: 750px;
+    
+    background-image: url("../img/unitcard_work_r1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    break-inside: avoid;
+    float:left;
+}
+
+.uic-main > div, .uic-main-sm > div{
+    float: left;
+}
+.uic-header-row{
+    position: relative;
+    top: 1%;
+    left: 1%;
+    
+    min-width: 99%;
+    max-width: 99%;
+    width: 99%;
+
+    min-height: 15%;
+    max-height: 15%;
+    height: 15%;
+    display: inline-block;
+}
+
+.uic-header-row-sm{
+    position: relative;
+    top: 0.5%;
+    left: 1%;
+    
+    min-width: 99%;
+    max-width: 99%;
+    width: 99%;
+
+    min-height: 15%;
+    max-height: 15%;
+    height: 15%;
+    float: left;
+}
+
+.uic-stat-row-label{
+    position: relative;
+    min-width: 90%;
+    max-width: 90%;
+    width: 90%;
+
+    min-height: 20%;
+    max-height: 20%;
+    height: 20%;
+
+    text-align: center;
+    display: inline-block;
+}
+
+.uic-stat-row-label-sm{
+    position: relative;
+    min-width: 90%;
+    max-width: 90%;
+    width: 90%;
+
+    min-height: 20%;
+    max-height: 20%;
+    height: 20%;
+
+    text-align: center;
+    display: inline-block;
+}
+
+
+.uic-stat-attack-row{
+    position: relative;    
+    min-width: 50%;
+    max-width: 50%;
+    width: 50%;
+
+    min-height: 10%;
+    max-height: 10%;
+    height: 10%;
+    display: inline-block;
+}
+
+.uic-stat-attack-row-sm{
+    position: relative;    
+    min-width: 50%;
+    max-width: 50%;
+    width: 50%;
+
+    min-height: 10%;
+    max-height: 10%;
+    height: 10%;
+    top: 1%;
+}
+
+
+.uic-tag-row{
+    position: relative;
+
+    top: 4%;
+    left: 0.5%;
+    
+    min-width: 50%;
+    max-width: 50%;
+    width: 50%;
+
+    min-height: 15%;
+    max-height: 15%;
+    height: 15%;
+    display: inline-block;
+}
+
+
+.uic-tag-row-sm{
+    position: relative;
+    
+    top: 1%;
+    left: 5%;
+
+    min-width: 50%;
+    max-width: 50%;
+    width: 50%;
+
+    min-height: 15%;
+    max-height: 15%;
+    height: 15%;
+}
+
+.uic-tag-row > ul {
+    line-height: 1.25;
+}
+
+.uic-tag-row > ul >li{
+    font-size: 2em;
+    font-style: italic;
+}
+
+.uic-tag-row-sm > ul{
+    line-height: 1.1;
+}
+.uic-tag-row-sm > ul > li{
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+
+
+.uic-name{
+    position: inherit;
+    top: 5%;
+    left: 1%;
+    text-align: left;
+    font-size: 2em;
+    min-width: 85%;
+    max-width: 85%;
+    width: 85%;
+    float: left;
+}
+
+.uic-name-sm{
+    position: absolute;
+    left: 1%;
+    text-align: left;
+    font-size: 1em;
+    min-width: 80%;
+    max-width: 80%;
+    width: 80%;
+    min-height: 72%;
+    max-height: 72%;
+    height: 72%;
+    float: left;
+}
+
+
+.uic-points{
+    position: absolute;
+    top: -1%;
+    left: 1%;
+    min-width: 15%;
+    max-width: 15%;
+    width: 15%;
+    
+    height: 80%;
+    min-height: 80%;
+    max-height: 80%;
+
+    font-size: 4em;
+    font-weight: 600;
+    float: left;
+    text-align: center;
+}
+
+.uic-points-sm{
+    position: absolute;
+    left: 85%;
+    top: 15%;
+    min-width: 15%;
+    max-width: 15%;
+    width: 15%;
+    
+    text-align: center;
+
+}
+.uic-points-sm > label{
+    font-size: 3em;
+    font-weight: 600;
+}
+
+
+.uic-stat-row-icon{
+    position: inherit;
+    min-width: 20%;
+    max-width: 20%;
+    width: 20%;
+    
+    min-height: 2em;
+    height: 2em;
+
+    font-size: 3em;
+    text-align: center;
+    float:left;
+}
+
+.uic-stat-row-icon-sm{
+    position: inherit;
+    top: 3%;
+    min-width: 20%;
+    max-width: 20%;
+    width: 20%;
+
+    font-size: 1em;
+    text-align: center;
+    float:left;
+}
+
+.uic-stat-row-icon > label{
+    position: inherit;
+    top: -2%;
+}
+
+.uic-stat-row-icon-sm > label{
+    position: inherit;
+    top: -2%;
+}
+
+#ucSize{
+    left: -12%;
+}
+#ucMove{
+    left: -24%;
+}
+#ucEvade{
+    left: -24%;
+}
+#ucArmor{
+    left: -24%;
+}
+#ucStruc{
+    left: 1%;
+}
+
+
+#ucMel{
+    top: -5%;
+    left: 10%;
+}
+#ucRange{
+    position: relative;
+    left: 120%;
+}
+#ucDist{
+    position: relative;
+    left: 150%;
+}
+#ucTags{
+    
+}
+
+
+/*
+    Army Force Builder
+*/
+#armyListDisplayTable{
+    border-collapse: collapse;
+    border-spacing: 8ex;
+    border: 1px solid #ddd;
+}
+
+#armyListDisplayTable tr:nth-child(even){
+    background-color: #f2f2f2
+}
+
+#armyListDisplayTable tr>td{
+    text-align: center;
+}
+
+#armyListDisplayTable tr>td>input[type="number"]{
+    width: 90%;
+    border-width: 1px;
+}
+#armyListDisplayTable tr>td>input[type="text"]{
+    width: 90%;
+    border-width: 1px;
+}
+#armyListDisplayTable tr>td>label{
+    width: 99%;
+    text-align: center;
+}
+
+.ab-tag-keyword-word{
+    font-size: small;
+    font-weight: 500;
+    line-height: 24px;
+    padding-inline-start: 20px;
+}
+
+.ab-tag-keyword-word-sm{
+    
+    background-color: lightgrey;
+    opacity:  100%;
+    border-color: rgb(51, 51, 51);
+    border-radius: 4px;
+    border-style: solid;
+    padding-right: 5px;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    display: block;
+    top: 0;
+    left: 0;
+    
+    
+    position: absolute;
+    /*left: -10%;*/
+    font-size: x-small;
+    font-weight: 500;
+    line-height: 12px;
+    padding-inline-start: 5px;
+
+}
+
+.ab-tag-row-sm{
+
+    position: absolute;
+    
+    /*top: 1%;
+    left: 5%;
+
+    min-width: 5%;
+    max-width: 5%;
+    width: 5%;
+
+    min-height: 5%;
+    max-height: 5%;
+    height: 5%;*/
+}
+
+.ab-tag-row-sm > ul{
+    line-height: 1.1;
+    line-break: unset;
+}
+.ab-tag-row-sm > ul > li{
+    font-size: 1.5em;
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/*#abTagView{
+    background-color: lightgrey;
+    opacity:  100%;
+    border-color: rgb(51, 51, 51);
+    border-radius: 4px;
+    border-style: solid;
+    z-index: 100;
+    width: 10%;
+    height: 15%;
+    display: flex;
+    top: 0;
+    left: 0;
+}*/
+
+/*
+
+#ucSize{
+    position: relative;
+    top: 52px;
+    left: 151px;
+}
+#ucMove{
+    position: relative;
+    top: 248px;
+    left: 151px;
+}
+#ucEvade{
+    position: relative;
+    top: 434px;
+    left: 151px;
+}
+#ucArmor{
+    position: relative;
+    top: 631px;
+    left: 151px;
+}
+#ucStruc{
+    position: relative;
+    top: 828px;
+    left: 151px;
+}
+#ucMel{
+    position: relative;
+    top: 28px;
+    left: 289px;
+}
+#ucRange{
+    position: absolute;
+    top: 237px;
+    left: 289px;
+}
+#ucDist{
+    position: absolute;
+    top: 384px;
+    left: 289px;
+}
+#ucTags{
+    position: absolute;
+    top: 28px;
+    left: 423px;
+}*/
