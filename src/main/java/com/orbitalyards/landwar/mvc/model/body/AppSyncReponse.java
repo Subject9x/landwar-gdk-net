@@ -2,7 +2,6 @@ package com.orbitalyards.landwar.mvc.model.body;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 
@@ -14,20 +13,29 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
 
-@JsonRootName(value = "response")
-public final class UnitResponse extends AppResponse {
+@JsonRootName("response")
+public class AppSyncReponse extends AppResponse {
+
 
 	@JsonProperty(defaultValue = "[]")
-	private List<UnitInfoEntry> units = new ArrayList<UnitInfoEntry>();
+	private List<UnitInfoEntry> update = new ArrayList<UnitInfoEntry>();
+	
+	@JsonProperty(defaultValue = "[]")
+	private List<Long> delete = new ArrayList<Long>();
+	
+	@JsonProperty(defaultValue = "[]")
+	private List<UnitInfoEntry> create = new ArrayList<UnitInfoEntry>();
 	
 	@JsonProperty
 	private UserModel user;
 	
-	public UnitResponse() {}
+	public AppSyncReponse() {}
 	
 	@JsonIgnore
-	private UnitResponse(Builder b) {
-		setUnits(b.getUnits());
+	private AppSyncReponse(Builder b) {
+		setCreate(b.getCreate());
+		setDelete(b.getDelete());
+		setUpdate(b.getUpdate());
 		setMsg(b.getMsg());
 		setStatusCode(b.getStatusCode());
 		setHttpStatus(b.getHttpStatus());
@@ -36,7 +44,9 @@ public final class UnitResponse extends AppResponse {
 
 	public static class Builder{
 		
-		private List<UnitInfoEntry> units = new ArrayList<UnitInfoEntry>();
+		private List<UnitInfoEntry> update = new ArrayList<UnitInfoEntry>();
+		private List<Long> delete = new ArrayList<Long>();
+		private List<UnitInfoEntry> create = new ArrayList<UnitInfoEntry>();
 		private String msg;
 		private int statusCode = 0;
 		private UserModel user = null;
@@ -44,10 +54,6 @@ public final class UnitResponse extends AppResponse {
 		
 		public Builder() {}
 		
-		public Builder setUnits(List<UnitInfoEntry> units) {
-			this.units = units;
-			return this;
-		}
 		public Builder setMsg(String msg) {
 			this.msg = msg;
 			return this;
@@ -65,15 +71,26 @@ public final class UnitResponse extends AppResponse {
 			this.user = user;
 			return this;
 		}
-		
-		public UnitResponse build(){
-			return new UnitResponse(this);
-		}
-		
-		public List<UnitInfoEntry> getUnits() {
-			return units;
+
+		public Builder setCreate(List<UnitInfoEntry> create) {
+			this.create = create;
+			return this;
 		}
 
+		public Builder setDelete(List<Long> delete) {
+			this.delete = delete;
+			return this;
+		}
+
+		public Builder setUpdate(List<UnitInfoEntry> update) {
+			this.update = update;
+			return this;
+		}
+		
+		public AppSyncReponse build(){
+			return new AppSyncReponse(this);
+		}
+		
 		public String getMsg() {
 			return msg;
 		}
@@ -87,14 +104,42 @@ public final class UnitResponse extends AppResponse {
 		public UserModel getUser() {
 			return user;
 		}
+		
+		public List<UnitInfoEntry> getUpdate() {
+			return update;
+		}
+
+		public List<Long> getDelete() {
+			return delete;
+		}
+
+		public List<UnitInfoEntry> getCreate() {
+			return create;
+		}
 	}
 	
-	public List<UnitInfoEntry> getUnits() {
-		return units;
+	public List<UnitInfoEntry> getUpdate() {
+		return update;
 	}
 
-	public void setUnits(List<UnitInfoEntry> units) {
-		this.units = units;
+	public void setUpdate(List<UnitInfoEntry> update) {
+		this.update = update;
+	}
+
+	public List<Long> getDelete() {
+		return delete;
+	}
+
+	public void setDelete(List<Long> delete) {
+		this.delete = delete;
+	}
+
+	public List<UnitInfoEntry> getCreate() {
+		return create;
+	}
+
+	public void setCreate(List<UnitInfoEntry> create) {
+		this.create = create;
 	}
 
 	public UserModel getUser() {
@@ -130,29 +175,5 @@ public final class UnitResponse extends AppResponse {
 		this.statusCode = statusCode;
 	}
 	
-	@Override
-	public int hashCode() {
-		return Objects.hash(httpStatus, msg, statusCode, units, user);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UnitResponse other = (UnitResponse) obj;
-		return httpStatus == other.httpStatus && Objects.equals(msg, other.msg) 
-				&& statusCode == other.statusCode
-				&& Objects.equals(units, other.units) 
-				&& Objects.equals(user, other.user);
-	}
-
-	@Override
-	public String toString() {
-		return "UnitResponse [units=" + units + ", msg=" + msg + ", statusCode=" + statusCode + ", user=" + user
-				+ ", httpStatus=" + httpStatus + "]";
-	}
+	
 }

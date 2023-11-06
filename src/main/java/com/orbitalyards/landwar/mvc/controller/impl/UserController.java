@@ -17,7 +17,7 @@ import com.orbitalyards.landwar.mvc.model.body.AppResponse;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
 import com.orbitalyards.landwar.service.impl.AppUserServiceImpl;
 
-@Controller()
+@Controller
 @RequestMapping("/user")
 @CrossOrigin(value = "*")
 public class UserController extends AppController{

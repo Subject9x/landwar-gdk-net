@@ -1,19 +1,12 @@
 package com.orbitalyards.landwar.mvc.controller.impl;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@RestController
+@Controller
+@RequestMapping(path = "/army")
+@CrossOrigin(value = "*")
 public class ArmyListController {
 
-	@GetMapping(value = "army/", produces = "application/json")
-	public String getArmyList() {
-		return "";
-	}
-	
-	@GetMapping(value = "army/lists/", produces = "application/json")
-	public String getArmyListMulti() {
-		
-		return "";
-	}
 }

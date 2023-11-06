@@ -1,9 +1,12 @@
 package com.orbitalyards.landwar.service;
 
 import com.orbitalyards.landwar.mvc.model.body.AppResponse;
+import com.orbitalyards.landwar.mvc.model.body.AppSyncReponse;
 import com.orbitalyards.landwar.mvc.model.body.UnitResponse;
 
 public interface UnitInfoService {
+	
+	public AppResponse syncAppData(AppSyncReponse appUpdate);
 	
 	public AppResponse createUnits(UnitResponse unitInfoPack);
 	

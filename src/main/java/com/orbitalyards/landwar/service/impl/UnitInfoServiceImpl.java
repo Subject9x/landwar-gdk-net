@@ -1,16 +1,13 @@
 package com.orbitalyards.landwar.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +16,7 @@ import com.orbitalyards.landwar.jpa.model.UnitInfo;
 import com.orbitalyards.landwar.jpa.repository.UnitInfoRepository;
 import com.orbitalyards.landwar.jpa.repository.UserRepository;
 import com.orbitalyards.landwar.mvc.model.body.AppResponse;
+import com.orbitalyards.landwar.mvc.model.body.AppSyncReponse;
 import com.orbitalyards.landwar.mvc.model.body.UnitResponse;
 import com.orbitalyards.landwar.mvc.model.data.UnitInfoEntry;
 import com.orbitalyards.landwar.mvc.model.dto.UnitInfoEntryDTO;
@@ -42,6 +40,64 @@ public class UnitInfoServiceImpl implements UnitInfoService {
 	@Autowired
 	private UnitInfoEntryDTO unitInfoEntryDTO;
 	
+	/***
+	 * Specific service-route for front-end application implementations. The {@linkplain AppSyncResponse} is used to collect
+	 * all 3 forms of data-sync; Update, Create, Delete. These actions are processed in that exact order as well.
+	 * @param appUpdate
+	 * @return {@linkplain AppResponse}
+	 */
+	@Override
+	public AppResponse syncAppData(AppSyncReponse appUpdate) {
+		
+		AppResponse response = validateUnitRequest(appUpdate.getUpdate());
+		
+		if(response == null) {
+			Optional<AppUser> checkUser = null;
+			try {
+				checkUser = userRepository.findByUserName(appUpdate.getUser().getUserName());
+			}
+			catch(Exception e){
+				logger.error(e.getMessage(), e);
+				return new UnitResponse.Builder()
+						.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+						.setMsg(UserServiceException.errors.JPA_GENERAL.msg())
+						.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+						.build();
+			}
+			
+			if(checkUser.isEmpty() || !checkUser.isPresent()) {
+				return new UnitResponse.Builder()
+								.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+								.setMsg(UserServiceException.errors.JPA_GENERAL.msg())
+								.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+								.build();
+			}
+			
+			AppUser user  = checkUser.get();
+			
+			try {
+				createNewUnits(appUpdate.getCreate(), user);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+			
+			try {
+				updateExistingUnits(appUpdate.getUpdate(), user);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+			
+			try {
+				deleteUnits(null, user);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+			
+		}
+		
+		return response;
+	}	
+	
 	@Override
 	public AppResponse createUnits(UnitResponse unitInfoPack) {
 		
@@ -53,7 +109,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
 				checkUser = userRepository.findByUserName(unitInfoPack.getUser().getUserName());
 			}
 			catch(Exception e){
-				logger.error(e.getMessage());
+				logger.error(e.getMessage(), e);
 				return new UnitResponse.Builder()
 						.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 						.setMsg(UserServiceException.errors.JPA_GENERAL.msg())
@@ -75,7 +131,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
 				updateExistingUnits(unitInfoPack.getUnits(), user);
 			}
 			catch(Exception e) {
-				logger.error(e.getMessage());
+				logger.error(e.getMessage(), e);
 				return new UnitResponse.Builder()
 						.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 						.setMsg("Problem saving units to database.")
@@ -154,30 +210,33 @@ public class UnitInfoServiceImpl implements UnitInfoService {
 		return null;
 	}
 	
+	@Transactional
+	private void createNewUnits(List<UnitInfoEntry> createList, AppUser user) throws Exception{
+		
+		List<UnitInfo> createUnits = new ArrayList<UnitInfo>();
+		for(UnitInfoEntry updated : createList) {
+			UnitInfo newUnit = new UnitInfo();
+			newUnit = unitInfoEntryDTO.toPersistFromModel(updated, newUnit);
+			newUnit.setAppUser(user);
+			user.getUnits().add(newUnit);
+			createUnits.add(newUnit);
+		}
+		
+		unitInfoRepository.saveAllAndFlush(createUnits);
+	}
 	
 	@Transactional
 	private List<UnitInfoEntry> updateExistingUnits(List<UnitInfoEntry> updateList, AppUser user) throws Exception{
 		
 		
 		List<UnitInfo> existingUnits = unitInfoRepository.findByAppUserOrderById(user);
-		List<UnitInfo> createUnits = new ArrayList<UnitInfo>();
 		for(UnitInfoEntry updated : updateList) {
-			boolean isNew = true;
 			for(UnitInfo exist : existingUnits) {
 				if(exist.getId().equals(updated.getId())) {
 					exist = unitInfoEntryDTO.toPersistFromModel(updated, exist);
-					isNew = false;
 				}
 			}
-			if(isNew) {
-				UnitInfo newUnit = new UnitInfo();
-				newUnit = unitInfoEntryDTO.toPersistFromModel(updated, newUnit);
-				newUnit.setAppUser(user);
-				user.getUnits().add(newUnit);
-				createUnits.add(newUnit);
-			}
 		}
-		existingUnits.addAll(createUnits);
 		
 		existingUnits = unitInfoRepository.saveAllAndFlush(existingUnits);
 		
@@ -185,8 +244,9 @@ public class UnitInfoServiceImpl implements UnitInfoService {
 	}
 	
 	@Transactional
-	private List<UnitInfoEntry> deleteUnits(List<UnitInfoEntry> deleteList, AppUser user) throws Exception{
+	private void deleteUnits(Long[] deleteList, AppUser user) throws Exception{
 		
-		return null;
-	}	
+		List<Long> idList = Arrays.asList(deleteList);
+		unitInfoRepository.deleteAllById(idList);
+	}
 }

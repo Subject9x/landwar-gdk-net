@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.orbitalyards.landwar.mvc.controller.AppController;
 import com.orbitalyards.landwar.mvc.model.body.AppResponse;
+import com.orbitalyards.landwar.mvc.model.body.AppSyncReponse;
 import com.orbitalyards.landwar.mvc.model.body.UnitResponse;
 import com.orbitalyards.landwar.mvc.model.data.UserModel;
 import com.orbitalyards.landwar.service.UnitInfoService;
 
-@Controller()
+@Controller
 @RequestMapping("/unit")
 @CrossOrigin(value = "*")
 public class UnitInfoController extends AppController{
@@ -28,6 +29,24 @@ public class UnitInfoController extends AppController{
 	
 	@Autowired
 	private UnitInfoService unitInfoService;
+	
+	
+	
+	@PatchMapping(path = "", produces = "application/json")
+	public ResponseEntity<AppResponse> processAppSync(@RequestBody AppSyncReponse appDataSubmit) throws Exception{
+		
+		AppResponse response = validateUserInput(appDataSubmit.getUser().getUserName(), appDataSubmit.getUser().getUserCode());
+		
+		if(response == null) {
+			response = unitInfoService.syncAppData(appDataSubmit);
+		}
+		
+		if(response.getException() != null) {
+			logger.error(response.getException().getMessage());
+		}
+		
+		return new ResponseEntity<AppResponse>(response, response.getHttpStatus());
+	}
 	
 	@GetMapping(path = "/fetch", produces = "application/json")
 	public ResponseEntity<AppResponse> retrieveUnitInfo(@RequestBody UserModel user, @RequestParam int count, @RequestParam String sortBy) throws Exception{

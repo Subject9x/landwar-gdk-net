@@ -47,7 +47,7 @@ public class AppUserServiceImpl implements AppUserService {
 			exists = userRepository.findByUserName(userName);
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
 			UserResponse resp = new UserResponse.Builder()
 									.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -80,7 +80,7 @@ public class AppUserServiceImpl implements AppUserService {
 			newUser = userRepository.save(newUser);
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
 			UserResponse resp = new UserResponse.Builder()
 					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -200,7 +200,7 @@ public class AppUserServiceImpl implements AppUserService {
 			userRepository.delete(toDelete.get());
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
 			UserResponse resp = new UserResponse.Builder()
 					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -271,7 +271,7 @@ public class AppUserServiceImpl implements AppUserService {
 			userRepository.save(user);
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
 			UserResponse resp = new UserResponse.Builder()
 					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -383,7 +383,7 @@ public class AppUserServiceImpl implements AppUserService {
 			user = userRepository.save(user);	
 		}
 		catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			UserServiceException userError = new UserServiceException(UserServiceException.errors.JPA_GENERAL.msg());
 			UserResponse resp = new UserResponse.Builder()
 					.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)

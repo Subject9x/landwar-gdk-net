@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public final class UnitInfoEntry {
 
 	//we propagate this for handling updates to existing units.
-	@JsonProperty(defaultValue = "0", required = true, value = "entryId")
-	private long id;
+	@JsonProperty(defaultValue = "0", required = true)
+	private long dbId;
 	
 	@JsonProperty(defaultValue = "", required = true)
 	private String unitName;
@@ -66,14 +66,14 @@ public final class UnitInfoEntry {
 		this.imgUrl = "";
 	}
 	
-	@JsonGetter("entryId")
+	@JsonGetter("dbId")
 	public long getId() {
-		return id;
+		return dbId;
 	}
 	
-	@JsonSetter("entryId")
-	public void setId(long id) {
-		this.id = id;
+	@JsonSetter("dbId")
+	public void setId(long dbId) {
+		this.dbId = dbId;
 	}
 
 	@JsonGetter("name")
@@ -218,7 +218,7 @@ public final class UnitInfoEntry {
 		clone.setSize(getSize());
 		clone.setTags(getTags());
 		clone.setUnitName(new String(getUnitName()));
-		clone.setId(getId());
+		clone.setId(-1);	//id is databaseId
 		
 		return clone;
 	}
@@ -226,7 +226,7 @@ public final class UnitInfoEntry {
 
 	@Override
 	public String toString() {
-		return "UnitInfoEntry [entryId=" + id + ", unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size + ", move="
+		return "UnitInfoEntry [dbId=" + dbId + ", unitName=" + unitName + ", pointsCost=" + pointsCost + ", size=" + size + ", move="
 				+ move + ", evade=" + evade + ", armor=" + armor + ", dmgMelee=" + dmgMelee + ", dmgRange=" + dmgRange
 				+ ", range=" + range + ", desc=" + desc + ", imgUrl=" + imgUrl + ", tags={" + tags.stream().toArray() +"}]";
 	}
