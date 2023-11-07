@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title th:text="${version}">LANDWAR NET</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" th:href="@{/dist/jquery-ui/base/jquery-ui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}">
+    
+    <link rel="stylesheet" th:href="@{/css/jquery_ui_ext/jquery-ui_ext.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <!-- <link rel="stylesheet" th:href="@{/static/css/pages/rulebook/rulebook.css}"/> -->
+    
+    <script type="text/javascript">
+		
+	</script>
+</head>
+<body>
+<div class="grd">
+	<div id="navBar" th:replace="~{fragments/general/navBar.html}"></div>
+	
+	<div class="row-fill row-fill-s row-fill-l"></div>
+	
+    <div id="pageLanding" class="grd-row">
+		<div th:replace="~{fragments/pages/landing.html}"></div>
+	</div>
+    <div id="pageRules" class="grd-row">
+		<div th:replace="~{fragments/pages/ruleBooks.html}"></div>
+	</div>
+    <div id="pageTagLib" class="grd-row" >
+		<div th:replace="~{fragments/pages/tagLib.html}"></div>
+	</div>
+    <div id="pageUnitBuilder" class="grd-row" >
+		<div th:replace="~{fragments/pages/unitBuilder.html}"></div>
+	</div>
+    <div id="pageArmyBuilder" class="grd-row" >
+		<div th:replace="~{fragments/pages/armyBuilder.html}"></div>
+	</div>
+    <div id="pageUnitCards" class="grd-row">
+		<div th:replace="~{fragments/pages/unitCard.html}"></div>
+	</div>
+</div>
+</body>
+</html>

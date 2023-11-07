@@ -1,20 +1,25 @@
 package com.orbitalyards.landwar.mvc.view.app;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @CrossOrigin(value = "*")
-public class Landing {
+public class AppViews {
 	
-	@GetMapping(path = "/app/landing")
+	@Value( "${landwar.app.version}" )
+	private String appVersion;
+	
+	@GetMapping(path = "/app/landing", produces="application/html")
 	public String userRegistration(Model model) {
 		
-		model.addAttribute("version", "LANDWAR-Net v0.0.1");
+		model.addAttribute("version", "LANDWAR-Net " + appVersion);
 		
-		return "landing";
+		return "home";
 	}
+	
+	
 }

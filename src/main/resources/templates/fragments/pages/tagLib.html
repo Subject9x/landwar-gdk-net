@@ -1,0 +1,63 @@
+<div class="grd-row-col-6 txt--center">
+	<div class="grd" hidden=true>
+	    <div class="grd-row">
+	        <div class="col-s-4 col-3 col-l-2 offset-s-1 offset-1">
+	            <h3>TAG Reference Library.</h3>
+	        </div>
+	    </div>
+	    <div class="row">
+	        <div class="col-s-11 col-11 col-l-11 offset-s-1 offset-1">
+	            <p><h4>Core Rules</h4></p>
+	            <p>TAG (Talents, Abilities, Gear) are unique rules that can be given to Units during <i>Unit Building</i></p>
+	            <p>These rules have their own conditions on use, activation, stat modifications, and requirements.</p>
+	            <p>TAGs are optional, players can agree to use them <i>or not</i>!</p>
+	        </div>
+	    </div>
+	    
+	    <div class="row row-fill-s row-fill row-fill-l"></div>
+	    
+	    <div class="grd-row">
+	        <div  class="col-s-10 col-10 col-l-10 offset-s-2 offset-1 offset-l-1">
+	            <button id="tagLibBtnCore" type="button" class="btn--blue ui-icon-white">
+	                Core TAGS
+	                <span class="ui-icon ui-icon-arrowthickstop-1-s"></span>
+	            </button>
+	            <!-- disabling modules until we can figure out how to make them work. -->
+	            <!-- <button id="tagLibBtnRPG" type="button" disabled>RPG Tags</button> -->
+	            <!-- <button id="tagLibBtnMultiWep"type="button" disabled>Multi-Weapon Tags</button> -->
+	        </div>
+	    </div>
+	    <div class="row row-fill-s row-fill row-fill-l">
+	    </div>
+	    <div class="grd-row">
+	        <div class="grd">
+	            <div class="grd-row">
+	                <div class="grd-row-col-6 txt--center">
+	                    <table id='tagLib_list' class="tagButtonTable">
+	                        <tbody>
+	                        </tbody>
+	                    </table>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="grd-row">
+	        <div id="tagLibModal" class="col-s-10 col-10 col-l-10 offset-s-1 offset-1 offset-l-1">
+	        </div>
+	    </div>
+	    <!--here to trigger 'requirements' baselines-->
+	    <div id="blank" hidden>
+	        <input id="blank_name" type="text" value="" isabled />
+	        <input id="blank_size" type="number" value="0" disabled />
+	        <input id="blank_move" type="number" value="0" disabled />
+	        <input id="blank_evade" type="number" value="0" disabled />
+	        <input id="blank_DMGM" type="number" value="0" disabled />
+	        <input id="blank_DMGR" type="number" value="0" disabled />
+	        <input id="blank_range" type="number" value="0" disabled />
+	        <input id="blank_armor" type="number" value="0"  disabled />
+	        <!-- <input id="blank_structure" type="number" value="0" disabled /> -->
+	        <input id="blank_tags" type="text" value="" disabled />
+	    </div>
+	</div>
+</div>

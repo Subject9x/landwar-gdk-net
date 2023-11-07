@@ -1,0 +1,77 @@
+<div class="grd-row-col-6 txt--center">
+	<div class="grd" hidden=true>
+	    <div class="grd-row">
+	        <div class="grd-row-col-4--sm grd-row-col-4--md grd-row-col-5-lg txt--center">
+	            <h3>Unit Card Generator</h3>
+	        </div>
+	    </div>
+	    
+	    <div class="grd-row">
+	        <div class="grd-row-col-2-6--sm grd-row-col-2-6--md grd-row-col-2-6--lg text--center">
+	            <p>
+	                This tool will generate the Unit Cards you will need to use for each unit.
+	            </p>
+	            <p>
+	                Unit Info can be loaded from .csv files that were created by the Unit Builder tool.
+	                OR
+	                an Army List file.
+	                
+	                At this time, image upload for unit cards is disabled.
+	            </p>
+	        </div>
+	        <div class="grd-row-col-4-6--sm grd-row-col-4-6--md grd-row-col-4-6--lg txt--center">
+	            <div class="uic-main-sm">
+	                <div class="uic-header-row-sm">
+	                    <div class="uic-name-sm" id="ucName"></div>
+	                    <div class="uic-points-sm" id="ucPoints"></div>
+	                </div>
+	                <div class="uic-stat-row-label-sm">
+	                    <div class="uic-stat-row-icon-sm"><label id="ucSize"></label></div>
+	                    <div class="uic-stat-row-icon-sm"><label id="ucMove"></label></div>
+	                    <div class="uic-stat-row-icon-sm"><label id="ucEvade"></label></div>
+	                    <div class="uic-stat-row-icon-sm"><label id="ucArmor"></label></div>
+	                    <div class="uic-stat-row-icon-sm"><label id="ucStruc"></label></div>
+	                </div>
+	                <div class="uic-stat-attack-row-sm">
+	                    <div class="uic-stat-row-icon-sm"><label id="ucMel"></label></div>
+	                    <div class="uic-stat-row-icon-sm"><label id="ucRange"></label></div>
+	                    <div class="uic-stat-row-icon-sm"><label id="ucDist"></label></div>
+	                </div>
+	                <div class="uic-tag-row-sm"></div>
+	                <div class="uic-tag-row-sm">
+	                    <ul id="ucKeywords" class="list--unstyled uic-keyword-word-sm txt--left"></ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="grd-row">
+	        <div class="grd-row-col-3-6--sm grd-row-col-3-6--md grd-row-col-3-6--lg">
+	            You can open an existing CSV file from the Unit Editor or Army Builder
+	        </div>
+	        <div class="grd-row-col-3-6--sm grd-row-col-3-6--md grd-row-col-2-6--lg">
+	            <!-- <button type="button" title="Create blank Unit Builder file." onclick="ucg_control_sheet_new();" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-plusthick"></span></button> -->
+	            <button type="button" title="Open a valid CSV file for printing." onclick="ucg_control_sheet_import();" class="btn--blue ui-icon-white"><span class="ui-icon ui-icon-folder-open"></span></button>
+	        </div>
+	    </div>
+	    <div class="grd-row">
+	        <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-6--lg">
+	            <div class="row-fill-16px"></div>
+	        </div>
+	    </div>
+	
+	    <div class="grd-row">
+	        <div class="grd-row-col-2-6--sm grd-row-col-2-6--md grd-row-col-2-6--lg text--left">
+	            <p><b>OR</b> you can select the amount of <b>blank</b> cards you'd like to print.</p>
+	        </div>
+	        <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg text--left">
+	            <input id="uicBlankCopies" type="number" title="copies of blank template to print"/>
+	        </div>
+	        <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg text--left">
+	            <button type="button" onclick="ucg_print_blanks_pdf(event);" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-print"></button>
+	        </div>
+	        <div class="grd-row-col-2-6--sm grd-row-col-2-6--md grd-row-col-2-6--lg"></div>
+	    </div>
+	</div>
+</div>
+
