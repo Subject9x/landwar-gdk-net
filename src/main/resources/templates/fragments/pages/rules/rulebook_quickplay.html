@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LANDWAR GDK v0.4.0</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    
+    <!-- <link rel="stylesheet" href="../../../../css/base_responsive.css"/> -->
+    
+    <link rel="stylesheet" th:href="@{../../../dist/furtive/css/furtive.min.css}">
+    <link rel="stylesheet" th:href="@{../../../css/styles.css}"/>
+    <link rel="stylesheet" th:href="@{../../../css/pages/rulebook/rulebook.css}"/>
+    <style>
+		@media print {
+		   @page {
+				width: 637.5px;
+				max-width: 637.5px;
+				height: 825px;
+				
+			     margin-left: 0.8in;
+			     margin-right: 0.8in;
+			     margin-top: 0;
+			     margin-bottom: 0;
+			   }
+			}
+	</style>
+</head>
+<body>
+<div class="grd">
+    <div class="grd-row">
+        <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-5--lg txt--center">
+            <h3><b>LANDWAR</b> Quick Play</h3><h4>Core Rules</h4>
+        </div>
+    </div>
+    <div class="grd-row ">
+        <i>Turn Order</i>
+    </div>
+    <div class="grd-row  txt--center">
+        <div class="grd-row-col-2-6 thinPanel">
+            <ol class="list">
+                <li><i>Initiative</i></li>
+                <li><i>Movement</i></li>
+                <li><i>Combat</i></li>
+                <li><i>Damage</i></li>
+                <li><i>Resolution</i></li>
+            </ol>
+        </div>
+        <div class="grd-row-col-4-6 thinPanel txt--left">
+            <ul >
+                <li>Determine <i>Advantage</i> for turn.</li>
+                <li>Move Units in <i>Initiative Order</i>. </li>
+                <li>Alternate making attacks.</li>
+                <li>Apply any damage from successful attacks.</li>
+                <li>Remove destroyed units, check end game.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-1-6"></div>
+        <div class="grd-row-col-5-6">
+            <b>note:</b> where applicable, <i>TAG</i> rules <b>override</b> the core rules of the game.
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>1. Initiative</b>
+            </div>
+            <div class="txt--center ">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li>
+                        <b>Panicked</b>
+                        <ul>
+                            <li><b>any</b> <i>Units</i> with <i>Panicked</i> token <b>subtracts 1</b> from their <i>Stress</i> amount.</li>
+                        </ul>
+                    </li>
+                    <li>Players each roll 1D6.</li>
+                    <li><b>Highest</b> value Player becomes gains<i>Advantage</i> for turn.
+                        <ul>
+                            <li>assign <b>+2 INI</b> to a single <i>non-panicked</i> Unit.</li>
+                        </ul>
+                    </li>
+                    <li>Resolve any <i>[TAG]</i> rules for this phase.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>2. Movement</b>
+            </div>
+            <div class="txt--center">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li>all <i>Units</i> move in order of <b>lowest MV to highest.</b></li>
+                    <li><i>Advantage</i> Player moves <b>second</b> on all <i>ties</i> of Move Value.</li>
+                    <li><i>Move Types</i>
+                        <ul>
+                            <li><b>Stationary:</b> place token, Unit can rotate in place.</li>
+                            <li><b>Normal:</b> Unit may move <b>up to</b> its current total <i>MV</i> value.</li>
+                            <li><b>TAG:</b> make move as described in TAG rule.</li>
+                        </ul>
+                    </li>
+                    <li>Check <i>Danger Close</i>, <i>Overwatch</i>, mark any <i>High Speed</i> moves.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>3. Combat</b>
+            </div>
+            <div class="txt--center ">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li>Any unit with <i>Melee</i> or <i>Ranged</i> values may make 1 attack.</li>
+                    <li>Target must be <b>closest</b> within <i>Line of Sight</i> or suffer Stress for missed attacks.</li>
+                    <li><i>Check Line of Sight</i>: Enemy units block LoS, terrain may block Line of Sight.</li>
+                    <li><i>Ranged Attack</i>: check for Effective Range vs Long Range</li>
+                    <li><i>Melee Attack</i>: 0-1" range and facing enemy.</li>
+                    <li>Basic <i>ATK</i> dice pool is <b>3</b>.</li>
+                    <li>Basic <i>DEF</i> dice pool is <b>3</b>.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>Combat Modifiers</b>
+            </div>
+            <div class="txt--center ">
+                <p><b>ATTACK</b></p>
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li><i>Stationary</i>  <b>+1 ATK</b></li>
+                    <li><i>Panicked</i>  <b>-3 ATK, -3 DEF</b> to minimum of <b>1.</b></li>
+                    <li><i>High Speed</i> <b>-2 ATK</b></li>
+                    <li><i>Overwatch</i> <b>-2 ATK</b></li>
+                </ul>
+                <p><b>DEFENSE</b></p>
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li><i>Long Range</i> <b>+1 DEF</b></i></li>
+                    <li><i>Moved more than 1/4 MV</i> - may spend <i>Evade</i> points on DEF rolls.</li>
+                    <li><i>High Speed</i>:  <b>re-roll 2 DEF.</b></li>
+                    <li><i>Cover</i> - may re-reroll <b>half base DEF dice.</b></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pagebreak"> </div>
+    <div class="grd-row">
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>4. Damage</b>
+            </div>
+            <div class="txt--center ">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li>Each attack the <i>Attacker</i> and <i>Defender</i> roll their D6 pools.</li>
+                    <li><b>Attacker counts each roll of 4+</b></li>
+                    <li><b>Defender counts each roll of 5+</b></li>
+                    <li>When Attacker success total is <b>greater than</b> Defender total, Target Unit takes <i>all the Damage from the attack.</i></li>
+                    <li>subtract Damage from Target's <b>Armor</b> stat.</li>
+                    <li><i>Ranged Attack</i>: <b>missed shots</b> at <b>non-closest Target</b> +1 stress at Effective Range OR +2 at Long Range.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>5. Resolution</b>
+            </div>
+            <div class="txt--center ">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li><b>Any</b> Units reduced to <b>0 Armor</b> in the <i>Damage</i> phase are now marked as <b>Destroyed.</b></li>
+                    <li><i>Anytime</i> a Player loses <b>1 or more</b> Units in a Turn, <b>all</b> Units within 6" suffer <b>+1 Stress</b>.</li>
+                    <li><b>Any</b> Units with more than 0 <i>Stress</i> tokens must make a <i>Stress Check.</i></li>
+                    <li><b>Any</b> Units with a <i>Panicked</i> token must make a <i>Stress Check.</i></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="grd-row">
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>Stress</b>
+            </div>
+            <div class="txt--center ">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li>+1 Stress <b>if</b> Unit took <b>any</b> damage <i>when</i> <b>Armor</b> was 50% <i>or less</i>.</li>
+                    <li>+1 Stress <b>if</b> Unit took <b>any</b> damage <i>when</i> <b>Armor</b> was 75% <i>or less</i>.</li>
+                    <li>+1 Stress <b>if</b> Unit was target of <b>3 or more</b> attacks this Turn.</li>
+                    <li>Any <i>TAG</i> rules that apply as well.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="grd-row-col-3-6 thinPanel">
+            <div class="txt--center">
+                <b>Stress Check</b>
+            </div>
+            <div class="txt--center ">
+                <ul class="list--unstyled infoSmall txt--left">
+                    <li>Each Unit with 1 or more <i>Stress Tokens</i> rolls <b>1D6</b>:</li>
+                    <li><b>If</b> result <b>greater than or equal to</b> total <i>Stress Tokens</i>, remove all tokens.</li>
+                    <li><b>If</b> result <b>less than</b> total <i>Stress Tokens</i>, give unit 1 <i>Panicked</i> token.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+	window.onload = (event) => {
+	  window.print();
+	};
+</script>
+</body>
+</html>
