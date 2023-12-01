@@ -93,7 +93,10 @@
     .ui-icon-arrowstop-1-e { background-position: -208px -32px; }
     .ui-icon-arrowstop-1-s { background-position: -224px -32px; }
     .ui-icon-arrowstop-1-w { background-position: -240px -32px; }
-    .ui-icon-arrowthick-1-n { background-position: 1px -48px; }
+    
+    /*this one is all set*/
+    .ui-icon-arrowthick-1-n { background-position: 2px -96px; }
+    
     .ui-icon-arrowthick-1-ne { background-position: -16px -48px; }
     .ui-icon-arrowthick-1-e { background-position: -32px -48px; }
     .ui-icon-arrowthick-1-se { background-position: -48px -48px; }

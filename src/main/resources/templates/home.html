@@ -4,43 +4,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title th:text="${version}">LANDWAR NET</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <title th:text="${version}">LANDWAR NET</title>
     <link rel="stylesheet" th:href="@{/dist/jquery-ui/base/jquery-ui.min.css}"/>
-    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}">
-    
     <link rel="stylesheet" th:href="@{/css/jquery_ui_ext/jquery-ui_ext.css}"/>
+    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
-    <!-- <link rel="stylesheet" th:href="@{/static/css/pages/rulebook/rulebook.css}"/> -->
-    
-    <script type="text/javascript">
-		
-	</script>
+    <link rel="stylesheet" th:href="@{/css/unitcard.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pages/rulebook/rulebook.css}"/>
+	<script type="text/javascript" th:src="@{/dist/jquery_v3.7.0/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lw/util/unitCalculator.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lw/pages/unitBuilder/unitBuildSheet.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lw/data/tagInfo.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lw/pages/tagLib.js}"></script>
 </head>
 <body>
 <div class="grd">
-	<div id="navBar" th:replace="~{fragments/general/navBar.html}"></div>
-	
-	<div class="row-fill row-fill-s row-fill-l"></div>
-	
-    <div id="pageLanding" class="grd-row">
-		<div th:replace="~{fragments/pages/landing.html}"></div>
-	</div>
-    <div id="pageRules" class="grd-row">
-		<div th:replace="~{fragments/pages/ruleBooks.html}"></div>
-	</div>
-    <div id="pageTagLib" class="grd-row" >
-		<div th:replace="~{fragments/pages/tagLib.html}"></div>
-	</div>
-    <div id="pageUnitBuilder" class="grd-row" >
-		<div th:replace="~{fragments/pages/unitBuilder.html}"></div>
-	</div>
-    <div id="pageArmyBuilder" class="grd-row" >
-		<div th:replace="~{fragments/pages/armyBuilder.html}"></div>
-	</div>
-    <div id="pageUnitCards" class="grd-row">
-		<div th:replace="~{fragments/pages/unitCard.html}"></div>
+	<div class="grd-row">
+		<div class="grd-row-col-6">
+		</div>
 	</div>
 </div>
+<div class="container">
+	<div class="row">
+		<div id="navBar" th:replace="~{fragments/general/navBar.html}"></div>	
+	</div>
+	<div class="row">
+		<div class="offset-3 col-6 offset-s-1 col-s-10 offset-l-4 col-l-4">
+			<div class="grd">
+				
+				<div class="row-fill row-fill-s row-fill-l"></div>
+				
+			    <div class="grd-row">
+					<div class="grd-row-col-6">
+						<div th:replace="~{fragments/pages/landing.html}" />
+					</div>
+				</div>
+			    <div class="grd-row">
+					<div class="grd-row-col-1-6"></div>
+					<div class="grd-row-col-4-6">
+						<div th:replace="~{fragments/pages/ruleBooks.html}" />
+					</div>
+				</div>
+			    <div class="grd-row">
+					<div class="grd-row-col-1-6"></div>
+					<div class="grd-row-col-4-6">
+						<div th:replace="~{fragments/pages/tagLib.html}" />
+					</div>
+				</div>
+			    <div class="grd-row" >
+					<div class="grd-row-col-1-6"></div>
+					<div class="grd-row-col-4-6" >
+						<div th:replace="~{fragments/pages/unitBuilder.html}" />
+					</div>
+				</div>
+			    <div class="grd-row" >
+					<div class="grd-row-col-1-6"></div>
+					<div class="grd-row-col-4-6" >
+						<div th:replace="~{fragments/pages/armyBuilder.html}" />
+					</div>		
+				</div>
+			    <div class="grd-row">
+					<div class="grd-row-col-1-6"></div>
+					<div class="grd-row-col-4-6" >
+						<div th:replace="~{fragments/pages/unitCard.html}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+	
+	const navBar = new Map();
+	
+	function showElementHidden(elmId){
+		for (const [key, value] of navBar) {
+		  if(key == elmId){
+			  value.removeAttribute('hidden');
+		  }
+		  else{
+			  value.setAttribute('hidden', 'true');
+		  }
+		}
+	};
+	
+	$(document).ready(function() {		
+		navBar.set("pageLanding", document.getElementById("pageLanding"));
+		navBar.set("pageRules", document.getElementById("pageRules"));
+		navBar.set("pageUnitBuilder", document.getElementById("pageUnitBuilder"));
+		navBar.set("pageTagLib", document.getElementById("pageTagLib"));
+		navBar.set("pageUnitCards", document.getElementById("pageUnitCards"));
+		navBar.set("pageArmyBuilder", document.getElementById("pageArmyBuilder"));
+		
+		showElementHidden("pageLanding");
+		
+		// NAV BAR 
+        $('#navHome')[0].addEventListener('click', ()=>{ showElementHidden("pageLanding"); });
+        $('#navRulebooks')[0].addEventListener('click', ()=>{ showElementHidden("pageRules");
+            //page_leave_taglib();
+        });
+        $('#navTagRules')[0].addEventListener('click', ()=>{ tl_buildTable(); showElementHidden("pageTagLib"); });
+        $('#navUnitBuild')[0].addEventListener('click', ()=>{ showElementHidden("pageUnitBuilder");  //page_leave_taglib();
+        });
+        $('#navCardGen')[0].addEventListener('click', ()=>{ showElementHidden("pageUnitCards"); });
+        $('#navArmyList')[0].addEventListener('click', ()=>{ showElementHidden("pageArmyBuilder"); });
+        
+        //Page: Landing
+        
+    
+        //Page: Rulebooks
+       // $('#btnCoreRules')[0].addEventListener('click', ()=>{
+        //    rb_rules_open_core();
+        //});
+      //  $('#btnCoreRulesSave')[0].addEventListener('click', ()=>{
+       //     rb_rules_pdf_core();
+        //});
+       // $('#btnCoreQuick')[0].addEventListener('click', ()=>{
+       //     rb_rules_open_quickplay();
+       // });
+       // $('#btnCoreQuickplaySave')[0].addEventListener('click', ()=>{
+       //     rb_rules_pdf_quick();
+       // });
+       // $('#btnCoreScenarios')[0].addEventListener('click', ()=>{
+       //     rb_scenarios_open_core();
+        //});
+        //$('#btnCoreScenariosSave')[0].addEventListener('click', ()=>{
+        //    rb_scenarios_save_core();
+        //});
+        
+        //Page: Tag Lib
+       //tl_buildTable();
+       // $("#tagLibBtnCore")[0].addEventListener('click', (event) => {
+        //    event.preventDefault();
+        //   tag_rules_pdf_core();
+        //});
+    
+        //Page: UnitBuilder
+        //$('#btnCoreUnitCostSave')[0].addEventListener('click', (event) => {
+        //    event.preventDefault();
+        //    rb_unit_cost_save();
+        //});
+	});
+</script>
 </body>
 </html>

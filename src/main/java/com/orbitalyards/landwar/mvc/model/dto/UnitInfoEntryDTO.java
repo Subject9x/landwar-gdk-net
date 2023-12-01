@@ -16,6 +16,8 @@ public interface UnitInfoEntryDTO {
 	
 	public String toJsonFromModel(UnitInfoEntry model) throws JsonProcessingException;
 	
+	public List<UnitInfoEntry> toModelFromJsonAsList(String jsonListData) throws JsonMappingException, JsonProcessingException;
+	
 	public UnitInfoEntry toModelFromPersist(UnitInfo jpaModel);
 	
 	public UnitInfo toPersistFromModel(UnitInfoEntry entry, UnitInfo jpaModel);

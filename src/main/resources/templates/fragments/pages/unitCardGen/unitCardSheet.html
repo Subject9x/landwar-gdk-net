@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <title th:text="${version}">LANDWAR NET</title>
+    
+    <link rel="stylesheet" th:href="@{/dist/jquery-ui/base/jquery-ui.min.css}"/>
+    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery_ui_ext/jquery-ui_ext.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/css/unitcard.css}"/>
+   	<style>
+		@media print {
+		   @page {
+				width: 637.5px;
+				max-width: 637.5px;
+				height: 825px;
+			}
+			   
+			#buttonRow{
+				display: none;
+			  }
+		}
+	</style>
+</head>
+<body>
+	<div id="buttonRow" class="grd" print="screen">
+	    <div class="grd-row">
+	        <div class="grd-row-col-3-6--sm grd-row-col-2-6--md grd-row-col-2-6--lg">
+	            <button id="btnPrint" type="button" onclick="uic_print_sheet(event)" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-print"></button>
+	        </div>
+	    </div>
+	</div>
+    <div id="cardTable" class="uic-card-table">
+		 <div  class="uic-main-sm" th:each="unit : ${units}" >
+			 <div class="uic-header-row-sm">
+				 <div class="uic-info-panel-sm">
+			        <div class="uic-name-sm" id="ucName"><label id="ucName" th:text="${unit.unitName}"></label></div>
+			        <div class="uic-stat-row-sm">
+				        <div class="uic-stat-row-label-sm"><label id="ucSize"  th:text="${unit.size}"></label></div>
+				        <div class="uic-stat-row-fill-sm"></div>
+				        <div class="uic-stat-row-label-sm"><label id="ucMove" th:text="${unit.move}"></label></div>
+				        <div class="uic-stat-row-fill-sm"></div>
+				        <div class="uic-stat-row-label-sm"><label id="ucEvade" th:text="${unit.evade}"></label></div>
+				        <div class="uic-stat-row-fill-sm"></div>
+				        <div class="uic-stat-row-label-sm"><label id="ucArmor" th:text="${unit.armor}"></label></div>
+					</div>
+				 </div>
+			     <div class="uic-points-sm" ><label id="ucPoints" th:text="${unit.pointsCost}"></label></div>
+			 </div>
+			  <div class="uic-atk-tag-row-sm">
+				 <div class="uic-attack-panel-sm">
+				        <div class="uic-stat-row-label-sm"><label id="ucSize"  th:text="${unit.dmgMelee}"></label></div>
+				        <div class="uic-atk-row-fill-sm-mid"></div>
+				        <div class="uic-stat-row-label-sm"><label id="ucMove" th:text="${unit.dmgRange}"></label></div>
+				        <div class="uic-stat-row-fill-sm"></div>
+				        <div class="uic-stat-row-label-sm"><label id="ucEvade" th:text="${unit.rangeDisplay}"></label></div>
+				  </div>
+				 <div class="uic-tag-panel-sm">
+			        <ul id="ucKeywords" class="list--unstyled uic-keyword-word-sm txt--left">
+						<li th:each="tag : ${unit.tags}" th:text="${tag.name}" ></li>
+					</ul>
+				 </div>
+			 </div>
+		 </div>
+	</div>
+</body>
+<script type="text/javascript" th:src="@{/js/lw/util/fileHandler.js}"></script>
+<script type="text/javascript" th:src="@{/js/lw/data/tagInfo.js}"></script>
+<script type="text/javascript" th:src="@{/js/lw/pages/unitCards/unitCardGenerate.js}"></script>
+</html>

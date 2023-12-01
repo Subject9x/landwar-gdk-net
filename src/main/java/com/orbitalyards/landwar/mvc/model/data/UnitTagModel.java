@@ -1,20 +1,23 @@
 package com.orbitalyards.landwar.mvc.model.data;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 /***
  * Convenience model class for rules tags.
  */
+@JsonAutoDetect
 public class UnitTagModel {
 
-	@JsonProperty(defaultValue = "0")
+	@JsonProperty(defaultValue = "0", required = true)
 	private int id;
 	
 	@JsonProperty(defaultValue = "0")
 	private int rulesId;
+	
+	@JsonProperty(defaultValue = "", required = false)
+	private String name;
 	
 	public UnitTagModel() {}
 	
@@ -24,24 +27,28 @@ public class UnitTagModel {
 		this.rulesId = rulesId;
 	}
 
-
-	@JsonGetter(value = "tagId")
+	
 	public int getId() {
 		return id;
 	}
-
-	@JsonSetter(value = "tagId")
+	
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	@JsonGetter(value = "rulesId")
+	
 	public int getRulesId() {
 		return rulesId;
 	}
-
-	@JsonSetter(value = "rulesId")
+	
 	public void setRulesId(int rulesId) {
 		this.rulesId = rulesId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

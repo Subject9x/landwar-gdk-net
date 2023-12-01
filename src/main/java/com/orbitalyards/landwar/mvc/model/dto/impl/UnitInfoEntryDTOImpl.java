@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orbitalyards.landwar.jpa.model.UnitInfo;
@@ -26,7 +27,7 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 	
 	@Override
 	public UnitInfoEntry toModelFromJson(String jsonData) throws JsonMappingException, JsonProcessingException{
-		if(jsonData.isBlank() || jsonData.isBlank()) {
+		if(jsonData == null || jsonData.isBlank() || jsonData.isBlank()) {
 			throw new JsonMappingException(null, "Error: data string was empty or blank.");
 		}
 		
@@ -43,6 +44,16 @@ public class UnitInfoEntryDTOImpl implements UnitInfoEntryDTO {
 		return model;
 	}
 
+	@Override
+	public List<UnitInfoEntry> toModelFromJsonAsList(String jsonListData) throws JsonMappingException, JsonProcessingException{
+		if(jsonListData == null || jsonListData.isBlank() || jsonListData.isBlank()) {
+			throw new JsonMappingException(null, "Error: data string was empty or blank.");
+		}
+		List<UnitInfoEntry> units = jsonMapper.readValue(jsonListData, new TypeReference<List<UnitInfoEntry>>() { });
+		
+		return units;
+	}
+	
 	@Override
 	public String toJsonFromModel(UnitInfoEntry model) throws JsonProcessingException{
 		

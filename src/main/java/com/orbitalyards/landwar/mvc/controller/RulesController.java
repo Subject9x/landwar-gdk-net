@@ -44,11 +44,19 @@ public class RulesController {
 		return "/fragments/pages/rules/rulebook_scenarios_basic";
 	}
 	
-	@GetMapping(path = "/rules/pdf/unitBuild", produces = "application/html")
+	@GetMapping(path = "/rules/pdf/tokens", produces = "application/pdf")
+	public byte[] getCoreTokens() throws Exception{
+		//return tokens pdf sheet
+		return null;
+	}
+	
+	@GetMapping(path = "/rules/pdf/tags/core", produces = "application/html")
 	public String getUnitBuildRules(Model model) throws Exception{
 		
 		model.addAttribute("version", "LANDWAR-Net v" + appVersion);
 		
-		return "/fragments/pages/rules/rulebook_core_unit_cost";
+		return "/fragments/pages/tagLib/tagLibPrintCore";
 	}
+	
+	
 }

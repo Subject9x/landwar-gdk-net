@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LANDWAR GDK v0.4.0</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <!--<link rel="stylesheet" href="../css/base_responsive.css"/>-->
+    <link rel="stylesheet" href="../../node_modules/jquery-ui/dist/themes/base/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="../../node_modules/furtive/css/furtive.min.css">
+    <link rel="stylesheet" href="../css/jquery_ui_ext/jquery-ui_ext.css"/>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <link rel="stylesheet" href="../css/pages/rulebook/rulebook.css"/>
+</head>
+<body>
+    <div id="mainView" class="grd">
+        <div class="grd-row"><div id="tagNavBar" class="grd-row-col-6"></div></div>
+        <div class="grd-row"><div id="pageLanding" class="grd-row-col-6"></div></div>
+        <div class="grd-row"><div id="pageRulebooks" class="grd-row-col-6"></div></div>
+        <div class="grd-row"><div id="pageTagLib" class="grd-row-col-6"></div></div>
+        <div class="grd-row"><div id="pageUnitBuild" class="grd-row-col-6"></div></div>
+        <div class="grd-row"><div id="pageUnitCardGen" class="grd-row-col-6"></div></div>
+        <div class="grd-row"><div id="pageForceBuild" class="grd-row-col-6"></div></div>
+    </div>
+</body>
+<script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../js/util/dialogs.js"></script>
+<script type="text/javascript" src="../js/util/fileHandler.js"></script>
+<script type="text/javascript" src="../js/util/unitCalculator.js"></script>
+<script type="text/javascript" src="../js/data/tagInfo.js"></script>
+<script type="text/javascript" src="../js/renderer.js"></script>
+<script type="text/javascript" src="../js/pages/tagLib.js"></script>
+<script type="text/javascript" src="../js/pages/unitBuilder/unitBuildSheet.js"></script>
+<script type="text/javascript">
+    
+
+    document.addEventListener('DOMContentLoaded',function(){
+
+        //Build index.html with everything needed.
+        navBar.innerHTML = window.nodeFileSys.loadHTML('layout/navbar_default.html');
+    
+        pageLanding.innerHTML = window.nodeFileSys.loadHTML('pages/landing.html');
+    
+        pageRulebooks.innerHTML = window.nodeFileSys.loadHTML('pages/rulebooks.html');
+        pageRulebooks.setAttribute('hidden', 'true');
+      
+        pageUnitBuild.innerHTML = window.nodeFileSys.loadHTML('pages/unitBuilder.html');
+        pageUnitBuild.setAttribute('hidden', 'true');
+    
+        pageTagLib.innerHTML = window.nodeFileSys.loadHTML('pages/tagLib.html');
+        pageTagLib.setAttribute('hidden', 'true');
+    
+        pageUnitCardGen.innerHTML = window.nodeFileSys.loadHTML('pages/unitCard.html');
+        pageUnitCardGen.setAttribute('hidden', 'true');
+
+        pageForceBuild.innerHTML = window.nodeFileSys.loadHTML('pages/armyBuilder.html');
+        pageForceBuild.setAttribute('hidden', 'true');
+    
+        // NAV BAR 
+        $('#navHome')[0].addEventListener('click', ()=>{
+            pageLanding.removeAttribute('hidden');
+            pageRulebooks.setAttribute('hidden', 'true');
+            pageUnitBuild.setAttribute('hidden', 'true');
+            pageTagLib.setAttribute('hidden', 'true');
+            pageUnitCardGen.setAttribute('hidden', 'true');
+            pageForceBuild.setAttribute('hidden', 'true');
+            page_leave_taglib();
+        });
+        $('#navRulebooks')[0].addEventListener('click', ()=>{
+            pageRulebooks.removeAttribute('hidden');
+            pageLanding.setAttribute('hidden', 'true');
+            pageUnitBuild.setAttribute('hidden', 'true');
+            pageTagLib.setAttribute('hidden', 'true');
+            pageUnitCardGen.setAttribute('hidden', 'true');
+            pageForceBuild.setAttribute('hidden', 'true');
+            page_leave_taglib();
+        });
+        $('#navTagRules')[0].addEventListener('click', ()=>{
+            pageTagLib.removeAttribute('hidden');
+            pageRulebooks.setAttribute('hidden', 'true');
+            pageUnitBuild.setAttribute('hidden', 'true');
+            pageLanding.setAttribute('hidden', 'true');
+            pageUnitCardGen.setAttribute('hidden', 'true');
+            pageForceBuild.setAttribute('hidden', 'true');
+        });
+        $('#navUnitBuild')[0].addEventListener('click', ()=>{
+            pageUnitBuild.removeAttribute('hidden');
+            pageRulebooks.setAttribute('hidden', 'true');
+            pageLanding.setAttribute('hidden', 'true');
+            pageTagLib.setAttribute('hidden', 'true');
+            pageUnitCardGen.setAttribute('hidden', 'true');
+            pageForceBuild.setAttribute('hidden', 'true');
+            page_leave_taglib();
+        });
+        $('#navCardGen')[0].addEventListener('click', ()=>{
+            pageUnitCardGen.removeAttribute('hidden');
+            pageRulebooks.setAttribute('hidden', 'true');
+            pageLanding.setAttribute('hidden', 'true');
+            pageUnitBuild.setAttribute('hidden', 'true');
+            pageTagLib.setAttribute('hidden', 'true');
+            pageForceBuild.setAttribute('hidden', 'true');
+        });
+        $('#navArmyList')[0].addEventListener('click', ()=>{            
+            pageForceBuild.removeAttribute('hidden');
+            pageRulebooks.setAttribute('hidden', 'true');
+            pageLanding.setAttribute('hidden', 'true');
+            pageUnitBuild.setAttribute('hidden', 'true');
+            pageTagLib.setAttribute('hidden', 'true');
+            pageUnitCardGen.setAttribute('hidden', 'true');
+        });
+        $('#navExit')[0].addEventListener('click', (event)=>{
+            nav_exit();
+            event.preventDefault();
+        });
+    
+        
+        //Page: Landing
+        
+    
+        //Page: Rulebooks
+        $('#btnCoreRules')[0].addEventListener('click', ()=>{
+            rb_rules_open_core();
+        });
+        $('#btnCoreRulesSave')[0].addEventListener('click', ()=>{
+            rb_rules_pdf_core();
+        });
+        $('#btnCoreQuick')[0].addEventListener('click', ()=>{
+            rb_rules_open_quickplay();
+        });
+        $('#btnCoreQuickplaySave')[0].addEventListener('click', ()=>{
+            rb_rules_pdf_quick();
+        });
+        $('#btnCoreScenarios')[0].addEventListener('click', ()=>{
+            rb_scenarios_open_core();
+        });
+        $('#btnCoreScenariosSave')[0].addEventListener('click', ()=>{
+            rb_scenarios_save_core();
+        });
+        
+        //Page: Tag Lib
+        tl_buildTable();
+        $("#tagLibBtnCore")[0].addEventListener('click', (event) => {
+            event.preventDefault();
+            tag_rules_pdf_core();
+        });
+    
+        //Page: UnitBuilder
+        $('#btnCoreUnitCostSave')[0].addEventListener('click', (event) => {
+            event.preventDefault();
+            rb_unit_cost_save();
+        });
+        //Page: Unit Cards
+
+        //Page: Force Builder
+
+    });
+</script>
+</html>

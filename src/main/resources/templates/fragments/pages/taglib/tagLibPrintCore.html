@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <title th:text="${version}">LANDWAR NET</title>
+    <link rel="stylesheet" th:href="@{/dist/jquery-ui/base/jquery-ui.min.css}" />
+    <link rel="stylesheet" th:href="@{/dist/furtive/css/furtive.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pages/rulebook/rulebook.css}"/>
+    <style>
+		@media print {
+		   @page {
+				width: 637.5px;
+				max-width: 637.5px;
+				height: 825px;
+				
+			     margin-left: 0.8in;
+			     margin-right: 0.8in;
+			     margin-top: 0;
+			     margin-bottom: 0;
+			   }
+			}
+	</style>
+</head>
+<body>
+    <div class="grd">
+        <div class="grd-row">
+            <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-5--lg txt--center">
+                <h3><b>LANDWAR</b> TAGS</h3><h4>Core Rules</h4>
+            </div>
+        </div>
+    </div>
+    <div id="tagListRows" class="grd txt--center">
+
+    </div>
+    <div id="blank" hidden>
+        <input id="blank_name" type="text" value="" isabled />
+        <input id="blank_size" type="number" value="0" disabled />
+        <input id="blank_move" type="number" value="0" disabled />
+        <input id="blank_evade" type="number" value="0" disabled />
+        <input id="blank_DMGM" type="number" value="0" disabled />
+        <input id="blank_DMGR" type="number" value="0" disabled />
+        <input id="blank_range" type="number" value="0" disabled />
+        <input id="blank_armor" type="number" value="0"  disabled />
+        <input id="blank_tags" type="text" value="" disabled />
+    </div>
+
+	<div hidden="true" media="screen">
+		<div th:replace="~{fragments/pages/taglib/tagLibView.html}"></div>	
+	</div>
+</body>
+<script type="text/javascript" th:src="@{/js/lw/data/tagInfo.js}"></script>
+<script type="text/javascript" th:src="@{/js/lw/pages/tagLib.js}"></script>
+<script type="text/javascript" th:src="@{/js/lw/pages/unitBuilder/unitBuildSheet.js}"></script>
+<script type="text/javascript">
+	window.onload = (event) => {
+    	let tagListRow = document.querySelector("#tagListRows");
+    	let tagLibHtml = document.querySelector("#tagView");
+
+	    let rowCount = 0;
+	    for(let tagId in tagInfo.data){
+			
+	        let tagItem = tagInfo.data[tagId];	        
+	        let newRowDiv = tagListRow.appendChild(document.createElement('div'));
+	        newRowDiv.id = "tagRow" + tagId;
+	        newRowDiv.className += 'grd-row';
+	
+	        let span = newRowDiv.appendChild(document.createElement('div'));
+	        span.className += 'grd-row-col-1 ';
+	
+	        let viewDiv = newRowDiv.appendChild(document.createElement('div'));
+	        viewDiv.id = newRowDiv.id + "_viewDiv";
+	        viewDiv.className += 'grd-row-col-4-6--sm grd-row-col-4-6--md grd-row-col-4-6--lg txt--center';
+	        viewDiv.innerHTML = tagLibHtml.innerHTML;
+	        viewDiv.querySelector("#tagWindow_descTitle").innerHTML =  tagItem.title;
+	        viewDiv.querySelector("#tagWindow_descText").innerHTML =  tagItem.desc;
+	        viewDiv.querySelector("#tagWindow_equation").innerHTML =  tagItem.eqt;
+	        viewDiv.querySelector("#tagWindow_descWarn").innerHTML =  tagItem.reqs('blank');
+	        viewDiv.removeChild(viewDiv.querySelector("#optional_header"));
+	        //let tagViewDiv = viewDiv.querySelector('#tagView');
+	        //tagViewDiv.removeChild(tagViewDiv.children[0]);
+	        //tagViewDiv.id ="";
+	        
+	        if(rowCount % 4 > 2){
+	            let brk = document.createElement('div');
+	            brk.classList.add('pagebreak');
+	            //tagViewDiv.appendChild(brk);
+	            tagListRow.appendChild(brk);
+	        }
+	        rowCount++;
+	    }
+	  window.print();
+	};
+	
+</script>
+</html>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public final class UnitInfoEntry {
 
 	//we propagate this for handling updates to existing units.
-	@JsonProperty(defaultValue = "0", required = true)
+	@JsonProperty(defaultValue = "0")
 	private long dbId;
 	
 	@JsonProperty(defaultValue = "", required = true)
@@ -50,7 +51,7 @@ public final class UnitInfoEntry {
 	@JsonProperty(defaultValue = "0", required = true)
 	private int range;
 	
-	@JsonProperty(defaultValue = "[]", required = false)
+	@JsonProperty(required = false)
 	private List<UnitTagModel> tags;
 
 	@JsonProperty(defaultValue = "", required = true)
@@ -59,6 +60,14 @@ public final class UnitInfoEntry {
 	@JsonProperty(defaultValue = "0", required = true)
 	private String imgUrl;
 	
+	@JsonProperty(defaultValue = "0", required = false)
+	private float tagTotal;
+	
+	@JsonProperty(defaultValue = "0", required = false)
+	private int completeTotal;
+	
+	@JsonIgnore
+	private String rangeDisplay;
 	
 	public UnitInfoEntry(){
 		this.unitName = "";
@@ -76,12 +85,12 @@ public final class UnitInfoEntry {
 		this.dbId = dbId;
 	}
 
-	@JsonGetter("name")
+	@JsonGetter("unitName")
 	public String getUnitName() {
 		return unitName;
 	}
 
-	@JsonSetter("name")
+	@JsonSetter("unitName")
 	public void setUnitName(String unitName) {
 		this.unitName = unitName;
 	}
@@ -136,22 +145,22 @@ public final class UnitInfoEntry {
 		this.armor = armor;
 	}
 
-	@JsonGetter("DMGM")
+	@JsonGetter("dmgMelee")
 	public int getDmgMelee() {
 		return dmgMelee;
 	}
 
-	@JsonSetter("DMGM")
+	@JsonSetter("dmgMelee")
 	public void setDmgMelee(int dmgMelee) {
 		this.dmgMelee = dmgMelee;
 	}
 
-	@JsonGetter("DMGR")
+	@JsonGetter("dmgRange")
 	public int getDmgRange() {
 		return dmgRange;
 	}
 
-	@JsonSetter("DMGR")
+	@JsonSetter("dmgRange")
 	public void setDmgRange(int dmgRange) {
 		this.dmgRange = dmgRange;
 	}
@@ -166,10 +175,17 @@ public final class UnitInfoEntry {
 		this.range = range;
 	}
 
+	@JsonSetter("tags")
 	public void setTags(List<UnitTagModel> newTags) {
-		this.tags = newTags;
+		if(newTags == null) {
+			this.tags = new ArrayList<UnitTagModel>();
+		}
+		else {
+			this.tags = newTags;	
+		}
 	}
 	
+	@JsonGetter("tags")
 	public List<UnitTagModel> getTags() {
 		//defensive copy
 		List<UnitTagModel> out = new ArrayList<UnitTagModel>();
@@ -199,6 +215,40 @@ public final class UnitInfoEntry {
 		this.imgUrl = imgUrl;
 	}
 	
+	public long getDbId() {
+		return dbId;
+	}
+
+	public void setDbId(long dbId) {
+		this.dbId = dbId;
+	}
+
+	public float getTagTotal() {
+		return tagTotal;
+	}
+
+	public void setTagTotal(float tagTotal) {
+		this.tagTotal = tagTotal;
+	}
+	
+	public int getCompleteTotal() {
+		return completeTotal;
+	}
+
+	public void setCompleteTotal(int completeTotal) {
+		this.completeTotal = completeTotal;
+	}
+	
+	@JsonIgnore
+	public String getRangeDisplay() {
+		return "["+String.valueOf(getRange()) + "\"]";
+	}
+
+	@JsonIgnore
+	public void setRangeDisplay(String rangeDisplay) {
+		this.rangeDisplay = rangeDisplay;
+	}
+
 	@Override
 	/***
 	 * 
