@@ -90,7 +90,8 @@
 		}
 	};
 	
-	$(document).ready(function() {		
+	$(document).ready(function() {	
+			
 		navBar.set("pageLanding", document.getElementById("pageLanding"));
 		navBar.set("pageRules", document.getElementById("pageRules"));
 		navBar.set("pageUnitBuilder", document.getElementById("pageUnitBuilder"));
@@ -135,6 +136,8 @@
         //});
         
         //Page: Tag Lib
+		initializeSortedTagList();
+        tl_buildTable();
        //tl_buildTable();
        // $("#tagLibBtnCore")[0].addEventListener('click', (event) => {
         //    event.preventDefault();

@@ -33,6 +33,36 @@
 	        </div>
 	    </div>
 	</div>
+	<div hidden="true">
+		<table>
+			<tbody id="rowTemplateBody">
+				<tr>
+				    <!--name -->
+				    <td id="name"></td>
+				    <!-- size --> 
+				    <td id="size"></td>
+				    <!-- move -->
+				    <td id="move"></td>
+				    <!-- evade -->
+				    <td id="evade"></td>
+				    <!-- melee -->
+				    <td id="melee"></td>
+				    <!-- range -->
+				    <td id="range"></td>
+				    <!-- dist -->
+				    <td id="dist"></td>
+				    <!-- armor -->
+				    <td id="armor"></td>
+				    <!-- struct -->
+				    <!-- <td id="struct"></td> -->
+				    <!-- tags array -->
+				    <td id="tags"></td>
+				    <!-- total points -->
+				    <td id="points"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
     <div id="cardTable" class="uic-card-table">
 		 <div  class="uic-main-sm" th:each="unit : ${units}" >
 			 <div class="uic-header-row-sm">
@@ -70,4 +100,9 @@
 <script type="text/javascript" th:src="@{/js/lw/util/fileHandler.js}"></script>
 <script type="text/javascript" th:src="@{/js/lw/data/tagInfo.js}"></script>
 <script type="text/javascript" th:src="@{/js/lw/pages/unitCards/unitCardGenerate.js}"></script>
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded',function(){
+	    initializeSortedTagList();
+	});
+</script>
 </html>

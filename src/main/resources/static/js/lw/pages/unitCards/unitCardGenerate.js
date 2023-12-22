@@ -18,7 +18,9 @@ function uic_row_add(){
     let table = doc.querySelector("#unitTable");
     let newRow = table.insertRow();
 
-    let rowTemplate = window.nodeFileSys.loadHTML('layout/pages/unitCardGen/unitRow.html');
+    //let rowTemplate = window.nodeFileSys.loadHTML('layout/pages/unitCardGen/unitRow.html');
+    //TODO - fix template
+    let rowTemplate = doc.querySelector("#rowTemplateBody").childNodes[0].innerHTML;
     newRow.innerHTML = rowTemplate;
 
     unitTableRowCount += 1;

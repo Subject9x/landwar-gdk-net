@@ -32,9 +32,9 @@ function ub_tags_update_row_array(rowId, srcArray){
 
 function ub_util_array_deepcpy(srcArray, dstArray){
     dstArray.length = 0;
-	srcArray.forEach(elem => {
-	    dstArray.push(elem)
-	});
+    for(let idx in srcArray){
+        dstArray.push(srcArray[idx]);
+    }
 }
 
 
@@ -75,6 +75,9 @@ function ub_control_delete_select(){
             let elm = doc.querySelector("#"+row.id + "_select");
             if(elm.checked === true){
                 doc.querySelector("#"+row.id).remove();
+                
+                row_tagArrays[tr.id].length = 0;
+                delete row_tagArrays[""+tr.id];
             }
 		}
 		index += 1;
@@ -216,7 +219,7 @@ function ub_tags_checkByName(tagName){
     for(let tagIdx in tagWindow_tagArray){
         let tagId = tagWindow_tagArray[parseInt(tagIdx)];
         if(!Number.isNaN(tagId)){
-            if(tagInfo.data[tagId].title === tagName){
+            if(sortedTags.find(isTag, tagId).title === tagName){
                 return true;
             }
         }
@@ -258,10 +261,10 @@ function ub_tagModal_validate_tags(){
 
     let tagRuleList = doc.querySelector("#tagRulesListData>tbody");
     let tagRow = tagRuleList.childNodes[1];
-    for(let tag in tagInfo.data){
+    for(let tag in sortedTags){
 
         let tagId = tagRow.children[1].children[1].value;
-        let tagObj = tagInfo.data[tagId];
+        let tagObj = sortedTags.find(isTag, tagId);
         let isCheck = tagRow.children[1].children[0].checked;
 
         let cost = tagObj.func(rowId);
@@ -280,9 +283,9 @@ function ub_tagModal_validate_tags(){
         if(warn && !isCheck){
             tagRow.classList.remove('tagRuleLineActive');
             tagRow.children[2].children[0].innerHTML = "";
-            if(ub_tags_checkExisting(tagId, tagWindow_tagArray)){
+            if(ub_tags_checkExisting(tagObj.id, tagWindow_tagArray)){
                 tagTotalCost = tagTotalCost - cost;
-                tagWindow_tagArray = ub_tagModal_update_tagArray(tagId, isCheck);
+                tagWindow_tagArray = ub_tagModal_update_tagArray(tagObj.id, isCheck);
             }
         }
         
@@ -303,16 +306,16 @@ function ub_tagModal_tag_check_req(rowId){
     let tagCacheArray = row_tagArrays[rowId];
     //
     let tagId = 0;
-    for(let tag in tagInfo.data){
+    for(let tag in sortedTags){
 
         tagId = tag;
-        let tagObj = tagInfo.data[tagId];
+        let tagObj = sortedTags.find(isTag, tagId);
 
-        let isCheck = ub_tags_checkExisting(tagId, tagCacheArray);
+        let isCheck = ub_tags_checkExisting(tagObj.id, tagCacheArray);
 
         if(isCheck){
 
-            let warn = tagInfo.data[tagId].reqs(rowId);
+            let warn = tagObj.reqs(rowId);
             if(warn){
                 isCheck = false;
             }
@@ -321,10 +324,10 @@ function ub_tagModal_tag_check_req(rowId){
             cost = parseFloat(cost.toFixed(1));
 
             if(!isCheck){
-                if(ub_tags_checkExisting(tagId, tagCacheArray)){
+                if(ub_tags_checkExisting(tagObj.id, tagCacheArray)){
                     tagTotalCost = tagTotalCost - cost; 
                 }
-                tagCacheArray = ub_tagModal_update_tagArray(tagId, isCheck);
+                tagCacheArray = ub_tagModal_update_tagArray(tagObj.id, isCheck);
             }
         }
     }
@@ -341,15 +344,17 @@ function ub_tagModal_tagRow_clickInfo(tagRow){
     let tagEqt = doc.querySelector('#tagWindow_equation');
     let tagId = parseInt(tagRow.children[1].children[1].value);
 
+	let tagObj = sortedTags.find(isTag, tagId);
+
     tagText.innerHTML = '';
-    tagText.innerHTML = tagInfo.data[tagId].desc;
+    tagText.innerHTML = tagObj.desc;
 
     tagTitle.innerHTML = '';
-    tagTitle.innerHTML = '<h3>' + tagInfo.data[tagId].title + '</h3>';
+    tagTitle.innerHTML = '<h3>' + tagObj.title + '</h3>';
 
     tagEqt.innerHTML = '';
 
-    if( tagInfo.data[tagId].reqs !== undefined){
+    if( tagObj.reqs !== undefined){
         let warn = ub_tagModal_tagRow_reqs(tagRow);
         if(warn){
             tagRow.children[1].children[0].checked = false;
@@ -360,8 +365,8 @@ function ub_tagModal_tagRow_clickInfo(tagRow){
         }
     }
 
-    if(tagInfo.data[tagId].eqt !== undefined){
-        tagEqt.innerHTML = tagInfo.data[tagId].eqt;
+    if(tagObj.eqt !== undefined){
+        tagEqt.innerHTML = tagObj.eqt;
     }
 }
 
@@ -371,7 +376,8 @@ function ub_tagModal_tagRow_clickInfo(tagRow){
 */
 function ub_tagModal_tagRow_reqs(tagRow){
     let tagId = parseInt(tagRow.children[1].children[1].value);
-    let warn = tagInfo.data[tagId].reqs(doc.querySelector('#tagWindow_rowId').value);
+    let tagObj = sortedTags.find(isTag, tagId);
+    let warn = tagObj.reqs(doc.querySelector('#tagWindow_rowId').value);
     if(warn === ''){
         doc.querySelector('#tagWindow_descWarn').innerHTML = "";
         tagRow.classList.remove('tagRuleLineDisable');
@@ -388,7 +394,7 @@ function ub_tagModal_tagRow_reqs(tagRow){
 function ub_tagModal_tagRow_check(tagRow){
     let isCheck = tagRow.children[1].children[0].checked;
     let tagId = tagRow.children[1].children[1].value;
-    let tagObj = tagInfo.data[tagId];
+    let tagObj = sortedTags.find(isTag, tagId);    
     let rowId = doc.querySelector('#tagWindow_rowId').value;
     let tagCost = parseFloat(doc.querySelector('#tagWindow_tagCost').innerHTML);
     let unitTotal = parseFloat(doc.querySelector('#tagWindow_baseCost').innerHTML);
@@ -410,7 +416,7 @@ function ub_tagModal_tagRow_check(tagRow){
         tagCost = tagCost - cost; 
     }
 
-    tagWindow_tagArray = ub_tagModal_update_tagArray(tagId, isCheck);
+    tagWindow_tagArray = ub_tagModal_update_tagArray(tagObj.id, isCheck);
 
     doc.querySelector("#tagWindow_tagCost").innerHTML = Math.round((tagCost + Number.EPSILON) * 100) / 100;
     doc.querySelector("#tagWindow_totalCost").innerHTML = Math.round(((unitTotal + tagCost) + Number.EPSILON) * 100) / 100;
@@ -461,23 +467,26 @@ function ub_row_tags_onclick(event){
 
     //zero-out the tag window array
     tagWindow_tagArray.length = 0;
-    ub_util_array_deepcpy(row_tagArrays[rowId], tagWindow_tagArray);
+    let rowTagArr = row_tagArrays[rowId];
+    if(rowTagArr.length > 0){
+        ub_util_array_deepcpy(row_tagArrays[rowId], tagWindow_tagArray);
+    }
 
     //build the complete TAG list in the tag table.
     let tagRuleList = doc.querySelector("#tagRulesListData>tbody");
     let tagCost = 0;
-    
-    for(let tag in tagInfo.data){
+    for(let tag in sortedTags){
 		
 		let tagRuleRow = tagRuleList.children[parseInt(tag)];
+        let tagObj = sortedTags[tag];
 		let isCheck = false;
 		
 		if(row_tagArrays[rowId].length > 0){
-			isCheck = ub_tags_checkExisting(tag, tagWindow_tagArray);
+			isCheck = ub_tags_checkExisting(tagObj.id, tagWindow_tagArray);
 		}
 		
         if(isCheck == true){
-            let cost = tagInfo.data[tag].func(rowId);
+            let cost = tagObj.func(rowId);
             cost = parseFloat(cost.toFixed(1));
 
             tagRuleRow.classList.add('tagRuleLineActive');
@@ -602,9 +611,10 @@ function ub_row_remove(){
         return;
     }
     
-    let lastRowId = doc.querySelector('#unitTable tr:last-child').id;
+    let rowId = doc.querySelector('#unitTable tr:last-child').id;
     
-    delete row_tagArrays[lastRowId];
+    row_tagArrays[rowId].length = 0;
+    delete row_tagArrays[""+rowId];
     
     doc.querySelector('#unitTable tr:last-child').remove();
 }
@@ -629,9 +639,13 @@ function ub_row_copy(){
    //$("#" + newRowId + '_structure').val(  parseInt($("#" + lastRowId + '_structure')[0].value) ) ;
    doc.querySelector("#" + newRowId + '_points').value = parseInt(doc.querySelector("#" + lastRowId + '_points').value);
 
-   let newArray = [...row_tagArrays[lastRowId]];
+	//let newArray = [];
+	//row_tagArrays[newRowId] = newArray;
+	let prevRowArr = row_tagArrays[lastRowId];
+	if(prevRowArr.length > 0){
+	    ub_util_array_deepcpy(row_tagArrays[lastRowId], row_tagArrays[newRowId]);
+	}
 
-   row_tagArrays[newRowId] = newArray;
    ub_row_change_points(newRowId);
    ub_row_tag_validate(newRowId);
 
@@ -658,7 +672,7 @@ function ub_row_change_points(rowId){
     let armorVal = parseInt(doc.querySelector("#"+ rowId + '_armor').value);
     //let structVal = parseInt($("#"+ rowId + '_structure')[0].value);
 
-    let sizeCost = uc_calc_Size(sizeVal);
+    let sizeCost = sizeVal;//uc_calc_Size(sizeVal);
     let moveCost = uc_calc_Move(moveVal, sizeVal);
     let evadeCost = uc_calc_Evade(sizeVal, evadeVal, moveVal);
     let dmgMeleeCost = uc_calc_Damage_Melee(dmgMeleeVal, moveVal);
@@ -697,15 +711,18 @@ function ub_row_tag_validate(rowId){
     if(rowArray.length === 0){
         return;
     }
+    
+    let cachetagWindowArr = tagWindow_tagArray; //cache pointer
 
     let newTagCost = 0;
     let undoCost = 0;
     let tagTotal = 0;
 
     let removeThese = [];
+    tagWindow_tagArray = rowArray;// ub_tags_checkByName() needs this for univerals calls
     for(let idx in rowArray){
         let tagId = rowArray[idx];
-        let tagData = tagInfo.data[tagId];
+        let tagData = sortedTags.find(isTag, tagId);
         let tagCost = tagData.func(rowId);
         if(tagData.reqs(rowId) !== ''){
             undoCost += (tagCost * -1);
@@ -725,6 +742,8 @@ function ub_row_tag_validate(rowId){
         let index = removeThese[idx];
         rowArray = rowArray.splice(index, 1);
     }
+    //uh preserve previous value?
+    tagWindow_tagArray = cachetagWindowArr;
 }
 /*
     TD <input> onChange binding.

@@ -35,7 +35,7 @@
     
 
     document.addEventListener('DOMContentLoaded',function(){
-
+		
         //Build index.html with everything needed.
         navBar.innerHTML = window.nodeFileSys.loadHTML('layout/navbar_default.html');
     
@@ -138,7 +138,6 @@
         });
         
         //Page: Tag Lib
-        tl_buildTable();
         $("#tagLibBtnCore")[0].addEventListener('click', (event) => {
             event.preventDefault();
             tag_rules_pdf_core();

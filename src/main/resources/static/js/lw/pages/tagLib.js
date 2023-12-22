@@ -22,8 +22,8 @@ function tl_buildTable(){
     var rowCount = 0;
     var tagRow = tagTable.insertRow();
    
-   	for (var i = 0; i < tagInfo.data.length; i++) { 
-        var tagItem = tagInfo.data[i];
+   	for (var i = 0; i < sortedTags.length; i++) { 
+        var tagItem = sortedTags[i];
         
         if(celCount === 5){
             tagRow = tagTable.insertRow();
@@ -41,7 +41,7 @@ function tl_buildTable(){
        	btn.classList.add("tagViewButton");
         btn.value = tagItem.title
         btn.id = "tg_" + i;
-        btn.setAttribute('data-index-number', i);
+        btn.setAttribute('data-index-number', tagItem.id);
         btn.addEventListener('click', (e)=>{
             tl_showTag(e.srcElement.dataset.indexNumber);
         });
@@ -55,7 +55,7 @@ function tl_buildTable(){
 }
 
 function tl_showTag(celData){
-    let tagData = tagInfo.data[parseInt(celData)];
+    let tagData = sortedTags.find(isTag, parseInt(celData));
     
     let tagViewPanel = document.querySelector("#tagLibViewPanel");
     
