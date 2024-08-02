@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LANDWAR GDK v0.4.0</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <!-- <link rel="stylesheet" href="../../../../css/base_responsive.css"/> -->
+    <link rel="stylesheet" href="../../../../../node_modules/furtive/css/furtive.min.css">
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+    <link rel="stylesheet" href="../../../../css/pages/rulebook/rulebook.css"/>
+</head>
+<body>
+<div class="grd">
+    <div class="grd-row">
+        <div class="grd-row-col-6">
+            <h3>LANDWAR</h3> <b>Unit Design Rules</b> v1.0.0
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-6">
+            <p>The following is for designing your own custom units in <i>LANDWAR</i>. You will assign stats to fill in the Unit Info card, then determine the total points cost for the unit. <i>TAGS</i> are optional upgrades that you can apply <i>after</i> the unit's base stats are set up.</p>
+            <p>We strongly recommend just getting the official <i>LANDWAR</i> app, it has a Unit editor that will do all the cost calculations for you along with TAG choices and their costs.</p>
+            <p><b>Base Stats</b></p>
+        </div>
+    </div>
+    <div class="grd-row">
+        <div class="grd-row-col-2-6">
+            <ul style="list-style: none;">
+                <li>Size [0+]</li>
+                <li>Move [0+]</li>
+                <li>Evade [0-3]</li>
+                <li>DMG-Melee [0+]</li>
+            </ul>
+        </div>
+        <div class="grd-row-col-2-6">
+            <ul style="list-style: none;">
+                <li>DMG-Range [0+]</li>
+                <li>Effective Range [0+]</li>
+                <li>Armor [0+]</li>
+            </ul>
+        </div>
+    </div>
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Size</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> <i>Size Value</i> * 2.</p>
+                        <p>Size influences several other core stats, such as Movement, and Armor.</p>
+                        <p>Additionally, Size plays a key role in several TAG costs as well.</p>
+                        <p>Smaller size units pay less for movement but more for armor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Move</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> (<i>Size Value</i> + <i>Move Value</i>) / 2.</p>
+                        <p>Movement value is the total inches a unit can move per-turn.</p>
+                        <p>Movement also determines a Unit's <i>Initiaitve Order</i>, when during the <i>Move Phase</i> that they will activate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Evade</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> ((<i>Size Value</i> / 1.5) * <i>Evade value</i>) + (<i>Move Value</i> / 2).</p>
+                        <p>Evade points are generated per-turn <b>when</b> a Unit moves <b>25%</b>b> or more of their total Move Value.</b></p>
+                        <p>Evade points are spent in the <i>Combat Phse</i> to boost <b>DEF</b> dice rolls, by increasing the roll result.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagebreak"> </div>
+
+    
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Damage-Melee</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> ((<i>DMG-Melee</i> * 2) + (<i>Move Value</i> / 4).</p>
+                        <p>Amount of <b>DMG</b> a Unit will deal when attacking in <i>Melee Range(0-1")</i>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Damage-Range</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> ((<i>DMG-Range</i> * 4)</p>
+                        <p>Amount of <b>DMG</b> a Unit will deal when attacking at range.</p>
+                        <p>Primary attack type of the game, most units will have a ranged attack of some type.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Effective Range</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> (<i>Move</i> / 2) + (<i>Range</i> - 16) + <i>DMG-Ranged</i>.</p>
+                        <p>Effective Range is in inches.</p>
+                        <p>Effective Range is simply the range where targets will not receive the <i>Long Range</i> defensive bonus.</p>
+                        <p><i>LANDWAR</i> does not have finite range limit, merely the 'best range' a unit attacks at.</p>
+                        <p>Cost is weighted to 16" being the default attack range, the cost can be 0 but not negative!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="grd-row thinPanel">
+        <div class="grd-row-col-6">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-6 txt--center">
+                        <h4><u>Armor</u></h4>
+                    </div>
+                </div>
+                <div class="grd-row">
+                    <div class="grd-row-col-6">
+                        <p><b>Cost = </b> (<i>Armor</i> * 4) - (<i>Size</i> * 2).</p>
+                        <p>Armor is the primary health pool of every unit in the game.</p>
+                        <p>Units suffer additional stress when Armor is below 50% of its starting value.</p>
+                        <p>Larger size units pay less for armor.</p>
+                        <p>Cost is weighted, the cost can be 0 but not negative!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grd-row sectionPanel">
+        <div class="grd-row-col-6">
+            <p>Now take all the costs and total them up, this gives you the <b>Base Cost</b> of a unit in <i>LANDWAR</i>.</p>
+            <p>Pretty straightforward. These simple costs are designed to be easily doable for as many units as you would like to make. All units adhere to these rules so point-costs are generally in-line. However please feel free to edit unit points as you see fit, fun is the most important element here.</p>
+        </div>
+    </div>
+</div>
+</body>

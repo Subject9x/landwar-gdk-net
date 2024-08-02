@@ -24,6 +24,9 @@ public class UnitTagRef extends BaseEntity<UnitTagRef> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="NAME", nullable=false, insertable =true, updatable=true)
+	private String name;
+	
 	@Column(name="TAG_ID", nullable = false, insertable = true, updatable = true)
 	private int tagId;
 	
@@ -61,6 +64,14 @@ public class UnitTagRef extends BaseEntity<UnitTagRef> {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getTagId() {

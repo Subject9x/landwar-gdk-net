@@ -841,7 +841,7 @@ const tagInfo = {
         },
         {
             title : 'Indirect Fire',
-            desc : '<p><i>Combat Phase</i>.</p><p>Unit may select targets <b>outside</b> <i>Line of Sight</i> when making <i>Ranged Attacks</i>. Target <b>must</b> be within <b>50% of</b> <i>Effective Range</i> of the attacking Unit. Unit suffers <b>+1<b/> additional <i>Stress for missed ranged attacks under the <i>Focus Fire</i> rule.</p>',
+            desc : '<p><i>Combat Phase</i>.</p><p>Unit may select targets <b>outside</b> <i>Line of Sight</i> when making <i>Ranged Attacks</i>. Target <b>must</b> be within <b>50% of</b> <i>Effective Range</i> of the attacking Unit.</p>',
             func : (rowId) => {
                 let moveVal = parseInt(document.getElementById(rowId + '_move').value);
                 let rangeDamageVal = parseInt(document.getElementById(rowId + '_DMGR').value);
@@ -849,7 +849,7 @@ const tagInfo = {
                 
                 let rangeCost = uc_calc_Range(moveVal, rangeVal, rangeDamageVal);
 
-                return (rangeDamageVal / 2) + (rangeCost * 0.33);
+                return (rangeDamageVal / 2) + (rangeCost * 0.45);
             },
             reqs : (rowId) => {
                 let warn = '';
@@ -862,12 +862,16 @@ const tagInfo = {
                     warn = warn + '<p>Unit must have a <b>[Range Damage]</b> greater than 0.</p>';
                 }
 
+                if(ub_tags_checkByName('Field Artillery')){
+                    warn = warn + '<p>Unit must have the <i>[Field Artillery]</i> tag.</p>';
+                }
+
                 // if(!ub_tags_checkByName('Minimum Range')){
                 //     warn = warn + '<p>Unit must have the <i>[Minimum Range]</i> tag.</p>';
                 // }
                 return warn;
             },
-            eqt:'(<b>Damage-Range</b> / 3) + (30% of <b>Range Cost</b>)'
+            eqt:'(<b>Damage-Range</b> / 3) + (45% of <b>Range Cost</b>)'
         },
         {
             title : 'Inertial Dampers',
@@ -1017,7 +1021,7 @@ const tagInfo = {
         },
         {
             title : 'Minimum Range',
-            desc : "<p><i>Combat Phase</i></p><p>When making a <b>Range Attack</b>, the Target <b>cannot be</b> 25% <b>or less</b> of Unit's <i>Effective Range</i> close, <b>minimum 8\"</b>.</p><p><b>[Indirect Fire]</b> if the Unit has this tag, Unit may select targets within <b>100%</b> of <i>Effective Range</i>.</p>",
+            desc : "<p><i>Combat Phase</i></p><p>When making a <b>Range Attack</b>, the Target <b>cannot be</b> 25% <b>or less</b> of Unit's <i>Effective Range</i> close, <b>minimum 8\"</b>.</p><p><b>[Field Artillery]</b> if the Unit has this tag, Unit may select targets within <b>100%</b> of <i>Effective Range</i>.</p>",
             func : (rowId) => {
                 let sizeVal = parseInt(document.getElementById(rowId + '_size').value)
                 let moveVal = parseInt(document.getElementById(rowId + '_move').value)
@@ -1050,7 +1054,7 @@ const tagInfo = {
             title : 'Mobile HQ',
             desc : '<p><i>Initiative Phase</i></p><p><b>Unit cannot be <i>Panicked</i>.</b></p><p>Player may add <b>+2</b> to their <i>initiative roll</i>.</p>',
             func : (rowId) => {
-                return ub_row_change_points(rowId) * 0.25;
+                return ub_row_change_points(rowId) * 0.33;
             },
             reqs : (rowId) => {
                 let warn = '';
@@ -1062,7 +1066,7 @@ const tagInfo = {
                 }
                 return warn;
             },
-            eqt:'<i>Unit base total COST</i> * 25%'
+            eqt:'<i>Unit base total COST</i> * 33%'
         },
         {
             title : 'Multi-Mode',
@@ -1120,12 +1124,12 @@ const tagInfo = {
         },
         {
             title : 'Overheat',
-            desc : '<p><i>Combat Phase</i></p><p>During <i>Combat Phase</i>, Unit may suffer <b>3 Stress Points</b> to re-roll <i>up to 3</i> <b>ATK</b> dice. <b>Cannot</b> be combine with <b>[Fearless]</b>.</p>',
+            desc : '<p><i>Combat Phase</i></p><p>During <i>Combat Phase</i>, Unit may suffer <b>3 Stress Points</b> to re-roll <i>up to 3</i> <b>ATK</b> dice. <b>Cannot</b> be combined with <b>[Fearless]</b>.</p>',
             func : (rowId) => {
                 let meleeDamageVal = parseInt(document.getElementById(rowId + '_DMGM').value);
                 let rangeDamageVal = parseInt(document.getElementById(rowId + '_DMGR').value);
-
-                return (meleeDamageVal * 2) + (rangeDamageVal * 2);
+                let rangeVal = parseInt(document.getElementById(rowId + '_range').value);
+                return (((meleeDamageVal + rangeDamageVal) / 2) * 3) + (rangeVal / 3);
             },
             reqs : (rowId) => {
                 let warn = '';
@@ -1134,7 +1138,7 @@ const tagInfo = {
                 }
                 return warn;
             },
-            eqt:'(<b>Damage-Melee</b> * 2) + (<b>Damage-Range</b> * 2)'
+            eqt:'(<i>average</i> <b>Damage-Melee</b> and <b>Damage-Range</b>) * 3 + (<b>Range</b> / 3)'
         },
         {
             title : 'Pack / Deploy',
@@ -1223,19 +1227,18 @@ const tagInfo = {
         },
         {
             title : 'Recon',
-            desc : "<p><i>Initiative Phase</i></p><p><b>Unit cannot be Panicked.</b></p><p>Player may <b>+1</b> to their <i>initiative roll</i> <b>IF</b> this Unit has <i>Line of Sight</i> on <b>at least 2</b> target models during the <i>Initiative Phase</i>.</p>",
+            desc : "<p><i>Initiative Phase</i></p><p><b>Unit cannot be Panicked.</b></p><p>Player may <b>+2</b> to their <i>Initiative</i> roll total <b>IF</b> this Unit has <i>Line of Sight</i> on <b>at least 2</b> target models in <b>Effective Range</b> during the <i>Initiative Phase</i>.</p><p>Unit suffers <b>-3 ATK</b> this <i>Combat Phase</i> to use the tag.</p>",
             func : (rowId) => {
-                let sizeVal = parseInt(document.getElementById(rowId + '_size').value);
                 let moveVal = parseInt(document.getElementById(rowId + '_move').value);
-                sizeVal = Math.max(1, sizeVal);
-                moveVal = Math.max(1, moveVal);
+                let rangeVal = parseInt(document.getElementById(rowId + '_range').value);
+                let armorVal = parseInt(document.getElementById(rowId + '_armor').value);
 
-                let sizeCost = uc_calc_Size(sizeVal);
-                let moveCost = uc_calc_Move(moveVal, sizeVal);
+                rangeVal = Math.max(1, rangeVal);
 
-                return sizeCost + sizeCost / moveCost * 10;
+                return (((rangeVal / 2) + (moveVal / 2)) / 2) + armorVal / 2;
             },
             reqs : (rowId) => {
+                let rangeVal = parseInt(document.getElementById(rowId + '_range').value);
                 let warn = '';
 
                 if(ub_tags_checkByName('Mobile HQ')){
@@ -1244,14 +1247,17 @@ const tagInfo = {
                 if(ub_tags_checkByName('Forward Observer')){
                     warn = warn + '<p>Unit <i>already has</i> [Forward Observer].</p>';
                 }
+                if(rangeVal < 1){
+                    warn = warn + '<p><i>Effective Range</i> must be <b>at least 8"</b>.</p>';
+                }
 
                 return warn;
             },
-            eqt:'<b>Size Cost</b> + (<b>Size Cost</b> / <b>Move Cost</b>) * 10.'
+            eqt:'<i>Average</i> of (<b>Range</b> / 2) + (<b>Move</b> / 2), then add (<b>Armor</b> / 2)'
         },
         {
             title : 'Rolling Stop',
-            desc : "<p><i>Movement Phase</i></p><p><b>If</b> Unit is declared <i>Stationary</i> and they moved the <i>previous Turn</i>, Unit <b>must</b> move a distance of <b>25% <i>Move</i></b>, minimum <b>2''</b>. <b>If</b> Unit enters melee range of an enemy, this <b>does not</b> count for <i>Danger Close</i> or any other melee, ramming effects.</p>",
+            desc : '<p><i>Movement Phase</i></p><p><b>If</b> Unit is declared <i>Stationary</i> and they moved the <i>previous Turn</i>, Unit <b>must</b> move a distance of <b>25% <i>Move</i></b>, minimum <b>2\"</b>. <b>If</b> Unit enters melee range of an enemy, this <b>does not</b> count for <i>Danger Close</i> or any other melee, ramming effects.</p>',
             func : (rowId) => {
                 let sizeVal = parseInt(document.getElementById(rowId + '_size').value);
                 let moveVal = parseInt(document.getElementById(rowId + '_move').value);
@@ -1473,9 +1479,12 @@ const tagInfo = {
                 let sizeVal = parseInt(document.getElementById(rowId + '_size').value);
                 let moveVal = parseInt(document.getElementById(rowId + '_move').value);
                 let armorVal = parseInt(document.getElementById(rowId + '_armor').value);
-                let armorCost = uc_calc_Armor(armorVal, sizeVal);
+                let evadeVal = parseInt(document.getElementById(rowId + '_evade').value);
 
-                return 0 - ((armorCost * 0.4) + (moveVal / 2));
+                let armorCost = uc_calc_Armor(armorVal, sizeVal);
+                let moveCost = uc_calc_Move(moveVal, sizeVal);
+
+                return (moveCost / 3) + (0 - (armorCost * 0.67)) + (evadeVal / 2);
             },
             reqs : (rowId) => {
                 let warn = '';
@@ -1486,7 +1495,7 @@ const tagInfo = {
 
                 return warn;
             },
-            eqt:'<i>subtract</i> ((<b>Armor COST</b> * 0.4) + (<b>Move</b> / 2))'
+            eqt:'(<b>Move</b> / 2) - (40% of <b>Armor COST</b>)'
         },
         {
             title : 'Coordinated Fire',
@@ -1529,6 +1538,38 @@ const tagInfo = {
                 return warn;
             },
             eqt:'<i>none</i> '
+        },
+        {
+            title : 'Field Artillery',
+            desc : '<p><i>Combat Phase</i>.</p><p>Unit may select targets <b>outside</b> <i>Line of Sight</i> when making <i>Ranged Attacks</i>. Target <b>cannot</b> be at <i>Long Range</i> of the attacking Unit.</p>',
+            func : (rowId) => {
+                let moveVal = parseInt(document.getElementById(rowId + '_move').value);
+                let rangeDamageVal = parseInt(document.getElementById(rowId + '_DMGR').value);
+                let rangeVal = parseInt(document.getElementById(rowId + '_range').value);
+                
+                let rangeCost = uc_calc_Range(moveVal, rangeVal, rangeDamageVal);
+
+                return (rangeDamageVal / 3) + (rangeCost * 0.65);
+            },
+            reqs : (rowId) => {
+                let warn = '';
+                let rangeVal = parseInt(document.getElementById(rowId + '_range').value);
+                if(rangeVal <= 0){
+                    warn = warn + '<p>Unit must have a <b>[Range]</b> greater than 0.</p>';
+                }
+                let rangeDamageVal = parseInt(document.getElementById(rowId + '_DMGR').value);
+                if(rangeDamageVal <= 0){
+                    warn = warn + '<p>Unit must have a <b>[Range Damage]</b> greater than 0.</p>';
+                }
+                if(ub_tags_checkByName('Indirect Fire')){
+                    warn = warn + '<p>Unit must have the <i>[Indirect Fire]</i> tag.</p>';
+                }
+                // if(!ub_tags_checkByName('Minimum Range')){
+                //     warn = warn + '<p>Unit must have the <i>[Minimum Range]</i> tag.</p>';
+                // }
+                return warn;
+            },
+            eqt:'(<b>Damage-Range</b> / 3) + (65% of <b>Range Cost</b>)'
         }
    ]
 };

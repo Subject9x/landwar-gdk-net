@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LANDWAR GDK v0.4.0</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    
+    <link rel="stylesheet" href="../../../../../node_modules/jquery-ui/dist/themes/base/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="../../../../../node_modules/furtive/css/furtive.min.css">
+    <link rel="stylesheet" href="../../../../css/jquery_ui_ext/jquery-ui_ext.css"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+</head>
+<body>
+    <!-- data row-->
+    <table id="unitTable" hidden></table>
+    <!-- ------------- -->
+    <div id="buttonRow" class="grd">
+        <div class="grd-row">
+            <div class="grd-row-col-3-6--sm grd-row-col-2-6--md grd-row-col-2-6--lg">
+                <!--<button type="button" onclick="" class="btn--blue ui-icon-white"><span class="ui-icon ui-icon-check"></span></button>
+                <button type="button" onclick="" class="btn ui-icon-grey"><span class="ui-icon ui-icon-squaresmall-minus"></span></button>
+                <button type="button" onclick="" class="btn--red ui-icon-white"><span class="ui-icon ui-icon-trash"></span></button
+                <button type="button" onclick="" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-disk"></span></button>
+                <button type="button" onclick="" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-folder-open"></button>>-->
+                <button type="button" onclick="uic_save_pdf(event);" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-print"></button>
+            </div>
+            <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg"></div>
+            <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6-lg">
+                <button id="uicWorkSheetClose" type="button" class=" btn--red ui-icon-white"><span class="ui-icon ui-icon-close"></span></button>
+            </div>
+        </div>
+    </div>
+    <div id="cardTable" class="uic-card-table"></div>
+</body>
+<script type="text/javascript" src="../../../../../node_modules/jquery/dist/jquery.min.js"></script> 
+<script type="text/javascript" src="../../../../js/util/dialogs.js"></script>
+<script type="text/javascript" src="../../../../js/util/fileHandler.js"></script>
+<script type="text/javascript" src="../../../../js/data/tagInfo.js"></script>
+<script type="text/javascript" src="../../../../js/pages/unitCards/rendererUnitInfoCardSheet.js"></script>
+<script type="text/javascript" src="../../../../js/pages/unitCards/unitCardGenerate.js"></script>
+<script type="text/javascript">
+ window.onload = (event) => {
+    let closeBtn = document.getElementById('uicWorkSheetClose');
+    closeBtn.addEventListener("click",  (event)=>{uic_window_close(event)});
+};
+</script>
+</html>

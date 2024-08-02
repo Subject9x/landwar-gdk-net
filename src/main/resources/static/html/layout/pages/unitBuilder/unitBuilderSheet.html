@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LANDWAR GDK v0.4.0</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="../../../../../node_modules/jquery-ui/dist/themes/base/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="../../../../../node_modules/furtive/css/furtive.min.css">
+    <link rel="stylesheet" href="../../../../css/jquery_ui_ext/jquery-ui_ext.css"/>
+    <link rel="stylesheet" href="../../../../css/styles.css"/>
+</head>
+<body>
+    <div class="grd">
+        <div class="grd-row txt--center">
+            <div class="grd-row-col-4--sm grd-row-col-4--md grd-row-col-5-lg offset-s-1 offset-1 txt--center">
+               <div id="fileName"><h3>Unit Builder - Worksheet</h3></div>
+            </div>
+        </div>
+        <div class="grd-row" >
+            <div  id="tagModal" class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-6--lg" hidden>
+            </div>
+        </div>
+        
+        <div class="grd-row">
+            <div class="grd-row-col-4">
+                <p style="color: red;">Warning: auto-save does not work at this time!</p>
+                <p>For information on stats, please consult the <b>Core Rulebook</b></p>
+            </div>
+        </div>
+
+       <!-- <span class="tooltiptext">Tooltip text</span> -->
+
+
+        <div class="grd-row">
+            <div class="grd-row-col-4-6--sm grd-row-col-3-6--md grd-row-col-3-6--lg">
+                <button type="button" title="Select All rows" onclick="ub_control_select_all(true);" class="btn--blue ui-icon-white"><span class="ui-icon ui-icon-check"></span></button>
+                <button type="button" title="Deselect All rows" onclick="ub_control_select_all(false);" class="btn ui-icon-grey"><span class="ui-icon ui-icon-squaresmall-minus"></span></button>
+                <button type="button" title="Delete Selected rows" onclick="ub_control_delete_select();" class="btn--red ui-icon-white"><span class="ui-icon ui-icon-trash"></span></button>
+                <button type="button" title="Save Selected rows" onclick="ub_control_save_select(event)" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-disk"></span></button>
+                <button type="button" title="Load .csv file" onclick="ub_control_loadfile(event)" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-folder-open"></span></button>
+                <button type="button" title="Print Selected to PDF" onclick="ub_control_new_print(event)" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-print"></span></button>
+                <button type="button" title="Select All rows" onclick="ub_control_help(event)" class="btn--blue ui-icon-white"><span class="ui-icon ui-icon-help"></span></button>
+            </div>
+            <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-2-6--lg"></div>
+            <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6-lg">
+                <button id="ubWorkSheetClose" type="button" title="Close, no auto-save!" class=" btn--red ui-icon-white"><span class="ui-icon ui-icon-close"></span></button>
+            </div>
+        </div>
+        
+        <div class="row-fill-s row-fill row-fill-l"></div>
+    
+        <div class="grd-row">
+            <div class="grd-row-col-6--sm grd-row-col-6--md grd-row-col-6--lg">
+                <table id="unitTable">
+                    <tr class="unitTableHead">
+                        <th>Select</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Move</th>
+                        <th>Evade</th>
+                        <th>DMG Melee </th>
+                        <th>DMG Range</th>
+                        <th>Range</th>
+                        <th>Armor</th>
+                        <!-- <th>Structure</th> -->
+                        <th>Points</th>
+                        <th>TAGs</th>
+                        <th>TAG total</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </table>
+            </div>
+        </div>  
+        <div class="grd-row">
+            <div class="grd-row-col-2--sm grd-row-col-2--md grd-row-col-1--lg  ">
+                <button type="button" id="btnAddUnit" title="Add row to bottom" class="btn btn--green ui-icon-white"><span class="ui-icon ui-icon-plusthick"></span></button>
+                <button type="button" id="btnRemoveUnit" title="Delete LAST row" class="btn btn--red ui-icon-white"><span class="ui-icon ui-icon-minusthick"></span></button>
+                <button type="button" id="btnCopyUnit" title="Copy LAST row" class="btn btn--blue ui-icon-white"><span class="ui-icon ui-icon-copy"></span></button>
+            </div>
+        </div>  
+        <div class="row-fill-s row-fill row-fill-l"></div>
+    </div>
+</body>
+<script type="text/javascript" src="../../../../../node_modules/jquery/dist/jquery.min.js"></script> 
+<script type="text/javascript" src="../../../../js/util/dialogs.js"></script>
+<script type="text/javascript" src="../../../../js/util/fileHandler.js"></script>
+<script type="text/javascript" src="../../../../js/util/unitCalculator.js"></script>
+<script type="text/javascript" src="../../../../js/data/tagInfo.js"></script>
+<script type="text/javascript" src="../../../../js/pages/unitBuilder/rendererUnitBuildSheet.js"></script>
+<script type="text/javascript" src="../../../../js/pages/unitBuilder/unitBuildSheet.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded',function(){
+        $('#btnAddUnit')[0].addEventListener('click', ()=>{
+            ub_row_add();
+        });
+    
+        $('#btnRemoveUnit')[0].addEventListener('click', () => {
+            ub_row_remove();
+        });
+
+        $('#btnCopyUnit')[0].addEventListener('click', () => {
+            ub_row_copy();
+        });
+
+        $('#ubWorkSheetClose')[0].addEventListener('click', (event) =>{
+            ub_sheet_close_window(event);
+        });
+    });
+</script>
+</html>
+

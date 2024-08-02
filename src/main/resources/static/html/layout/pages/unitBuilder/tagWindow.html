@@ -1,0 +1,70 @@
+<div class="grd" id="tagWindow">
+    <input type="hidden" id="tagWindow_rowId" />
+    <input type="hidden" id="tagWindow_tagBuffer" />
+    <div class="grd-row">
+        <div class="grd-row-col-2-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg">
+            <h4>TAG Options</h4>
+        </div>
+        <div class="grd-row-col-4-6--sm grd-row-col-4-6--md grd-row-col-4-6--lg"></div>
+        <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg txt--right">
+            <button id="tagWindowSave" type="button" class="btn--green ui-icon-white"><span class="ui-icon ui-icon-check"></span></button>
+            <button id="tagWindowClose" type="button" class="btn--red ui-icon-white"><span class="ui-icon ui-icon-close"></span></button>
+        </div>
+    </div>
+    <div class="grd-row">
+        <div id="tagRulesListPanel" class="grd-row-col-2-6--sm grd-row-col-2-6--md grd-row-col-2-6--lg">
+            <div class="grd">
+                <div class="grd-row">
+                    <div class="grd-row-col-5--sm grd-row-col-5--md grd-row-col-6--lg tagRulesListDiv ">
+                        <table id="tagRulesListData">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="grd-row-col-4-6--sm grd-row-col-4-6--md grd-row-col-4-6--lg">
+            <div class="grd">
+                <div id="tagRulesDescPanel" class="grd-row">
+                    <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg">
+                        <b>Unit Base: </b><label id="tagWindow_baseCost">0</label>
+                    </div>
+                    <!--<div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg"></div>-->
+                    <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg">
+                        <b>TAG Total: </b><label id="tagWindow_tagCost">0</label>
+                    </div>
+                    <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg"></div>
+                    <div class="grd-row-col-1-6--sm grd-row-col-1-6--md grd-row-col-1-6--lg">
+                        <b>Complete Total: </b><label id="tagWindow_totalCost">0</label>
+                    </div>
+                </div>
+                <div id="tagRulesDescPanel">
+                    <div class="grd-row">
+                        <div id="tagWindow_descTitle" class="grd-row-col-5--sm grd-row-col-5--md grd-row-col-5--lg"></div>
+                    </div>
+                    <div class="grd-row">
+                        <div id="tagWindow_descWarn" class="grd-row-col-5--sm grd-row-col-5--md grd-row-col-5--lg"></div>
+                    </div>
+                    <div class="grd-row">
+                        <div id="tagWindow_descText" class="grd-row-col-5--sm grd-row-col-5--md grd-row-col-5--lg"></div>
+                    </div>
+                    <div class="grd-row row-fill-s row-fill row-fill-l"></div>
+                    <div class="grd-row">
+                        <div class="grd-row-col-4--sm grd-row-col-4--md grd-row-col-5--lg">
+                            <b>Cost Equation : </b><label id="tagWindow_equation"></label>
+                        </div>
+                    </div>
+                    <div class="grd-row row-fill-s row-fill row-fill-l"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

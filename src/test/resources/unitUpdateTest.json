@@ -1,0 +1,61 @@
+{
+  "user": {
+    "userName": "doogle",
+    "userCode": "",
+    "loggedIn": "false"
+  },
+  "units": [
+    {
+      "id" : "0",
+      "name": "badonkus",
+      "pointsCost": 10,
+      "size": 1,
+      "move": 6,
+      "evade": 1,
+      "armor": 8,
+      "DMGM": 2,
+      "DMGR": 4,
+      "range": 16,
+      "tags": [
+        {
+          "tagId": 21,
+          "rulesId": 1
+        },
+        {
+          "tagId": 2,
+          "rulesId": 1
+        },
+        {
+          "tagId": 7,
+          "rulesId": 1
+        }
+      ],
+      "desc": "test test test",
+      "imgUrl": ""
+    },
+    {
+      "id" : "0",
+      "name": "kobbloo",
+      "pointsCost": 5,
+      "size": 3,
+      "move": 1,
+      "evade": 1,
+      "armor": 4,
+      "DMGM": 3,
+      "DMGR": 7,
+      "range": 32,
+      "tags": [
+        {
+          "tagId": 2,
+          "rulesId": 1
+        },
+        {
+          "tagId": 3,
+          "rulesId": 1
+        }
+      ],
+      "desc": "a second test unit tungle",
+      "imgUrl": ""
+    }
+  ]
+}
