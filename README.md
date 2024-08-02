@@ -1,3 +1,7 @@
+# ARCHIVED 8/1/2024
+## see [landwar-ui-react](https://github.com/Subject9x/landwar-ui-react)
+## see [landwar-svc](https://github.com/Subject9x/landwar-svc)
+
 # landwar_gdk_net
  spring boot based server for landwar gdk.
 
